@@ -10,3 +10,7 @@ Route::get('/', function () {
 Route::get('/users', function() {
     return view('Panel.users.user');
 });
+
+Route::get('/informasi', function() {
+    return view('Panel.informasi.informasi');
+});
