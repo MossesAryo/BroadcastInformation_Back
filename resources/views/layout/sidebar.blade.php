@@ -4,13 +4,13 @@
             <div class="h-16 flex items-center justify-center border-b border-gray-200 md:hidden">
                 <span class="text-theme text-xl font-bold">AdminPanel</span>
             </div>
-            
+
             <nav class="mt-5 px-2 space-y-1">
                 <a href="#" class="group flex items-center px-2 py-2 text-base font-medium rounded-md bg-theme text-white">
                     <i class="fas fa-home mr-3"></i>
                     Dashboard
                 </a>
-                <a href="#" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-theme-light hover:text-theme">
+                <a href="" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-theme-light hover:text-theme">
                     <i class="fas fa-users mr-3 text-gray-400"></i>
                     Users
                 </a>

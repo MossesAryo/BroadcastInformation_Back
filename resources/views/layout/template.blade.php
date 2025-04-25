@@ -34,7 +34,29 @@
     </style>
 </head>
 <body class="bg-gray-100">
-   @yield('main')
+    <div x-data="{ sidebarOpen: false }" class="min-h-screen flex flex-col">
+        <!-- Top Navigation -->
+        @include('layout.navbar')
+
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            @include('layout.sidebar')
+
+                    <!-- Main content -->
+                        <!-- Main content -->
+    <div class="flex-1 overflow-auto">
+        <main class="py-6 px-4">
+
+
+            @yield('main')
+
+        </main>
+    </div>
+
+</div>
+
+
+</div>
 </body>
 <!-- Footer -->
 @include('layout.footer')
