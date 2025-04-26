@@ -12,3 +12,7 @@ Route::get('/users', function() {
 Route::get('/informasi', function() {
     return view('Panel.informasi.informasi');
 });
+
+Route::get('/guru', function() {
+    return view('Panel.users.guru');
+});
