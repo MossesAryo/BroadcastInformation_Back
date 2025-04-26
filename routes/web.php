@@ -29,5 +29,8 @@ Route::get('/guru', function() {
 Route::get('/departemen', function() {
     return view('Panel.users.departemen');
 });
+Route::get('/notifikasi', function() {
+    return view('Panel.notifikasi.notifikasi');
+});
 
 

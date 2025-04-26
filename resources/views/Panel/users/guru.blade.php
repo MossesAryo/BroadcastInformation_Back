@@ -5,7 +5,7 @@
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">Guru</h2>
-                <p class="text-sm text-gray-500">Kelola data Guru</p>
+                <p class="text-sm text-gray-500">Kelola data guru</p>
             </div>
             <button
                 class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
