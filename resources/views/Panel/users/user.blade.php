@@ -1,7 +1,7 @@
 @extends('layout.template')
 @section('main')
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href=""
+        <a href="{{ url('/departemen') }}"
             class="block p-6 bg-[#57B4BA] text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <h5 class="mb-2 text-2xl font-bold tracking-tight">
                 Departemen
@@ -11,7 +11,7 @@
             </p>
         </a>
 
-        <a href="#"
+        <a href="{{ url('/guru') }}"
             class="block p-6 bg-[#57B4BA] text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <h5 class="mb-2 text-2xl font-bold tracking-tight">
                 Guru
@@ -21,7 +21,7 @@
             </p>
         </a>
 
-        <a href="#"
+        <a href="{{ url('/siswa') }}"
             class="block p-6 bg-[#57B4BA] text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <h5 class="mb-2 text-2xl font-bold tracking-tight">
                 Siswa
