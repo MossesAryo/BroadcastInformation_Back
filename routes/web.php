@@ -9,6 +9,11 @@ Route::get('/users', function() {
     return view('Panel.users.user');
 });
 
+
+Route::get('/departemen', function() {
+    return view('Panel.users.departemen');
+});
+
 Route::get('/siswa', function() {
     return view('Panel.users.siswa');
 });
@@ -19,4 +24,5 @@ Route::get('/informasi', function() {
 
 Route::get('/guru', function() {
     return view('Panel.users.guru');
+
 

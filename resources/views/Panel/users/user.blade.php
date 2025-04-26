@@ -1,7 +1,7 @@
 @extends('layout.template')
 @section('main')
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="#"
+        <a href=""
             class="block p-6 bg-[#57B4BA] text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <h5 class="mb-2 text-2xl font-bold tracking-tight">
                 Departemen
