@@ -31,6 +31,6 @@ Route::get('/departemen', function() {
 });
 Route::get('/notifikasi', function() {
     return view('Panel.notifikasi.notifikasi');
-});
+})->name('notifikasi');
 
 

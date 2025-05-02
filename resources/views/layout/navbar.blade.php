@@ -15,9 +15,10 @@
             <!-- Right side menu -->
             <div class="flex items-center space-x-4">
                 <!-- Notifications -->
-                <button class="p-2 text-white relative">
+                <button onclick="window.location='{{ route('notifikasi') }}'" class="p-2 text-white relative">
                     <i class="fas fa-bell fa-lg"></i>
-                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+
+                    {{-- <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span> --}}
                 </button>
 
                 <!-- User menu -->
