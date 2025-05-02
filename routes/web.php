@@ -37,6 +37,10 @@ Route::get('/history', function() {
     return view('Panel.history.history');
 })->name('history');
 
+Route::get('/users', function() {
+    return view('Panel.users.user');
+})->name('user');
+
 
 
 
