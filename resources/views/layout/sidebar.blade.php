@@ -31,7 +31,7 @@
         class="group flex items-center px-2 py-2 text-base font-medium rounded-md">
         <i :class="activeItem === '/history' ? 'text-grey' : 'text-white-400'" class="fas fa-history mr-3"></i>
           
-            History
+            Aktivitas
     </a>
     </nav>
 </div>
