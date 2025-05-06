@@ -33,4 +33,7 @@ Route::get('/notifikasi', function() {
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
 
+Route::get('/kalender', function() {
+    return view('Panel.kalender.kalender');
+})->name('kalender');
 
