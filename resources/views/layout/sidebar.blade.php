@@ -33,5 +33,14 @@
           
             Aktivitas
     </a>
+    <a href="{{ url('/kalender') }}"
+    @click="activeItem = '/kalender'"
+    :class="activeItem === '/kalender' ? 'bg-theme text-white' : 'text-gray-600 hover:bg-theme-light hover:text-theme'"
+    class="group flex items-center px-2 py-2 text-base font-medium rounded-md">
+    <i :class="activeItem === '/kalender' ? 'text-grey' : 'text-white-400'" class="fas fa-calendar-alt mr-3"></i>
+        Kalender
+    </a>
+    
+
     </nav>
 </div>

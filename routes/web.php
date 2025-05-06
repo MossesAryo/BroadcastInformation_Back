@@ -37,8 +37,8 @@ Route::get('/history', function() {
     return view('Panel.history.history');
 })->name('history');
 
-Route::get('/users', function() {
-    return view('Panel.users.user');
+Route::get('/kalender', function() {
+    return view('Panel.kalender.kalender');
 })->name('user');
 
 
