@@ -24,6 +24,14 @@
            class="group flex items-center px-2 py-2 text-base font-medium rounded-md">
             <i :class="activeItem === '/informasi' ? 'text-white' : 'text-gray-400'" class="fas fa-file-invoice mr-3"></i>
             Informasi
+        </a>
+        <a href="{{ url('/history') }}"
+        @click="activeItem = '/history'"
+        :class="activeItem === '/history' ? 'bg-theme text-white' : 'text-gray-600 hover:bg-theme-light hover:text-theme'"
+        class="group flex items-center px-2 py-2 text-base font-medium rounded-md">
+        <i :class="activeItem === '/history' ? 'text-grey' : 'text-white-400'" class="fas fa-history mr-3"></i>
+          
+            Aktivitas
     </a>
     </nav>
 </div>
