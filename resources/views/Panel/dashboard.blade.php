@@ -107,9 +107,10 @@
                         <div class="px-6 py-5 border-b border-gray-200">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-medium leading-6 text-gray-900">Status Broadcast </h3>
-                                <button type="button" class="text-theme hover:text-theme-dark">
+                                <a href="{{ url('/informasi') }}" <button type="button" class="text-theme hover:text-theme-dark">
                                     Lihat Semua
                                 </button>
+                                </a>
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -217,12 +218,15 @@
                     <div class="bg-white shadow-sm rounded-lg p-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Aksi Cepat</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
+                            
+                            <a href="{{ url('/users') }}" button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
+                                
                                 <div class="rounded-full bg-theme-light p-3 mb-2">
                                     <i class="fas fa-user-plus text-theme"></i>
                                 </div>
-                                <span class="text-sm">Tambah User</span>
-                            </button>
+                               <span class="text-sm">Tambah User</span>
+                            </button> </a>
+                    
                             <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
                                 <div class="rounded-full bg-theme-light p-3 mb-2">
                                     <i class="fas fa-box text-theme"></i>
@@ -235,12 +239,12 @@
                                 </div>
                                 <span class="text-sm">Ekspor Data</span>
                             </button>
-                            <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
-                                <div class="rounded-full bg-theme-light p-3 mb-2">
+                            <a href="{{ url('/notifikasi') }}" button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
+                            <div class="rounded-full bg-theme-light p-3 mb-2">
                                     <i class="fas fa-bell text-theme"></i>
                                 </div>
                                 <span class="text-sm">Notifikasi</span>
-                            </button>
+                            </button>  </a>
                         </div>
                     </div>
                 </div>
