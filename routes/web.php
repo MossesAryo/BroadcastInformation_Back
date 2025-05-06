@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\InformasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,9 +21,9 @@ Route::get('/siswa', function() {
     return view('Panel.users.siswa');
 });
 
-Route::get('/informasi', function() {
-    return view('Panel.informasi.informasi');
-});
+Route::get('/informasi', [InformasiController::class, 'index'])
+->name('getinfo');
+
 
 Route::get('/guru', function() {
     return view('Panel.users.guru');
