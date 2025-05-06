@@ -33,4 +33,14 @@ Route::get('/notifikasi', function() {
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
 
+Route::get('/history', function() {
+    return view('Panel.history.history');
+})->name('history');
+
+Route::get('/users', function() {
+    return view('Panel.users.user');
+})->name('user');
+
+
+
 
