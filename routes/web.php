@@ -21,8 +21,6 @@ Route::get('/siswa', function() {
     return view('Panel.users.siswa');
 });
 
-Route::get('/informasi', [InformasiController::class, 'index'])
-->name('getinfo');
 
 
 Route::get('/guru', function() {
@@ -42,6 +40,14 @@ Route::get('/history', function() {
 Route::get('/users', function() {
     return view('Panel.users.user');
 })->name('user');
+
+Route::get('/informasi', [InformasiController::class, 'index'])
+->name('get.info');
+
+Route::get('/informasi/create', [InformasiController::class, 'create'])
+->name('create.info');
+Route::post('/create', [InformasiController::class, 'store'])
+->name('post.info');
 
 
 

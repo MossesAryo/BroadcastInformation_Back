@@ -8,7 +8,7 @@ class informasi extends Model
 {
     protected $table = 'informasi';
     protected $primaryKey = 'IDInformasi';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'IDOperator',
