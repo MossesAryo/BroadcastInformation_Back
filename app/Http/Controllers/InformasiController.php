@@ -13,7 +13,8 @@ class InformasiController extends Controller
         'informasi'=> informasi::latest()->get()
     ]);
    }
-   public function indexapp(){ 
+   
+   public function indexAPI(){ 
     return response()->json(Informasi::latest()->get());
    }
 }
