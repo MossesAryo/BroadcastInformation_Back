@@ -8,7 +8,7 @@ class kategoriinformasi extends Model
 {
     protected $table = 'kategori_informasi';
     protected $primaryKey = 'IDKategoriInformasi';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['NamaKategori', 'Deskripsi'];
 

@@ -2,107 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Departemen;
+use App\Models\departemen;
 use Illuminate\Http\Request;
 
 class DepartemenController extends Controller
 {
-    
-    public function index(Request $request) // controller buat nyari data
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $search = $request->input('search');
-        $status = $request->input('status');
-        
-        $query = Departemen::query();
-        
-        // Pencarian
-        if ($search) {
-            $query->where('Nama_Departemen', 'like', "%{$search}%")
-                  ->orWhere('Email_Departemen', 'like', "%{$search}%");
-        }
-        
-        // Filter berdasarkan status jika ada
-        if ($status && $status != 'all') {
-            $query->where('status', $status);
-        }
-        
-        $departemen = $query->get();
-        
-        return view('Panel.users.departemen.departemen', compact('departemen'));
+        return view('Panel.users.departemen.departemen', [
+            'departemen' => departemen::get(),
+        ]);
     }
 
-   
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('Panel.users.departemen.create');
+        return view('Panel.users.departemen.create', [
+            'departemen' => departemen::get(),
+        ]);
     }
 
-  
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'Nama_Departemen' => 'required|string|max:255',
-            'Email_Departemen' => 'required|email|unique:departemen,Email_Departemen',
-            'Tanggal_Dibuat' => 'required|date',
+            'Nama_Departemen' => 'required',
+            'Email_Departemen' => 'required',
         ]);
-        
-        Departemen::create([
-            'Nama_Departemen' => $request->Nama_Departemen,
-            'Email_Departemen' => $request->Email_Departemen,
-            'Tanggal_Dibuat' => $request->Tanggal_Dibuat,
-        ])->save();
-        
-          
-        
-        return redirect()->route('departemen.index')
-                        ->with('success', 'Departemen berhasil ditambahkan.');
+
+        departemen::create($request->all());
+        return redirect()->route('departemen')->with('success', 'Departemen berhasil ditambahkan');
     }
-  
-    
-    // Redirect with success message
 
-
-  
-    public function show(Departemen $departemen)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return view('Panel.users.departemen.departemen', [
-            'departemen' => Departemen::get(),
-        ]);
+        //
     }
 
- 
-    public function edit(Departemen $departemen)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        return view('Panel.users.departemen.departemen', compact('departemen'));
+        return view('Panel.users.departemen.edit', [
+            'departemen' => departemen::find($id),
+        ]);
     }
 
-    
-    public function update(Request $request, Departemen $departemen)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'Nama_Departemen' => 'required|string|max:255',
-            'Email_Departemen' => 'required|email|unique:departemen,email'. $departemen->ID_Departemen,
-            'Tanggal_Dibuat' => 'required|date',
+        $data = $request->validate([
+            'Nama_Departemen' => 'required',
+            'Email_Departemen' => 'required',
+        ]);
 
-        ]);
-        
-        $departemen->update([
-           'Nama_Departemen' => $request->Nama_Departemen,
-            'Email_Departemen' => $request->Email_Departemen,
-            'Tanggal_Dibuat' => $request->Tanggal_Dibuat,
-        ]);
-        
-        return redirect()->route('Panel.users.departemen')
-                        ->with('success', 'Departemen berhasil diperbarui.');
+        departemen::find($id)->update($data);
+        return redirect()->route('departemen')->with('success', 'Departemen berhasil ditambahkan');
     }
 
-  
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        // $departemen->delete();
-        Departemen::find($id)->delete();
-        
-        return redirect()->route('departemen.index')
-                        ->with('success', 'Departemen berhasil dihapus.');
+        departemen::find($id)->delete();
+
+        return redirect()->route('departemen')->with('success', 'Departemen berhasil dihapus');
     }
 }

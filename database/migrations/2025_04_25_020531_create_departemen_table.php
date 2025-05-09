@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('ID_Departemen');
             $table->string('Nama_Departemen');
             $table->string('Email_Departemen')->unique();
-            $table->date('Tanggal_Dibuat');
+            $table->timestamps();
         });
     }
 
