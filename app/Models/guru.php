@@ -10,11 +10,11 @@ class guru extends Model
     protected $primaryKey = 'ID_Guru';
     public $timestamps = false;
 
-    protected $fillable = ['Nama_Guru', 'name'];
+    protected $fillable = ['Nama_Guru', 'id_user'];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'name');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
 }

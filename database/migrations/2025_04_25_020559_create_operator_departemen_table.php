@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('operator_departemen', function (Blueprint $table) {
             $table->id('IDOperator');
             $table->unsignedBigInteger('ID_Departemen');
-            $table->string('name');
+            $table->unsignedBigInteger('id_user');
             $table->string('NamaOperatorDepartemen');
-        
+
             $table->foreign('ID_Departemen')->references('ID_Departemen')->on('departemen')->onDelete('cascade');
-            $table->foreign('name')->references('name')->on('users')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
