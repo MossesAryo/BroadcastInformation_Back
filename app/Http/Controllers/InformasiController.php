@@ -44,4 +44,9 @@ class InformasiController extends Controller
 
         return redirect()->route('get.info')->with('success', 'Article data has been created');
     }
+
+    public function destroy(String $id){
+        informasi::find($id)->delete();
+        return back()->with('success','Information has been deleted');
+    }
 }

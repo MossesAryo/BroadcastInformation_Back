@@ -48,6 +48,8 @@ Route::get('/informasi/create', [InformasiController::class, 'create'])
 ->name('create.info');
 Route::post('/create', [InformasiController::class, 'store'])
 ->name('post.info');
+Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
+->name('destroy.info');
 
 
 
