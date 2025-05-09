@@ -10,11 +10,11 @@ class siswa extends Model
     protected $primaryKey = 'ID_Siswa';
     public $timestamps = false;
 
-    protected $fillable = ['Nama_Siswa', 'name'];
+    protected $fillable = ['Nama_Siswa', 'id_user'];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'name');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
 }

@@ -10,7 +10,7 @@ class operatordepartemen extends Model
     protected $primaryKey = 'IDOperator';
     public $timestamps = false;
 
-    protected $fillable = ['ID_Departemen', 'name', 'NamaOperatorDepartemen'];
+    protected $fillable = ['ID_Departemen', 'id_user', 'NamaOperatorDepartemen'];
 
     public function departemen()
     {
@@ -19,7 +19,7 @@ class operatordepartemen extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'name');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function informasi()
