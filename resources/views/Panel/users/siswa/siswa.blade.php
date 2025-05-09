@@ -7,7 +7,7 @@
                 <h2 class="text-2xl font-bold text-gray-800">Siswa</h2>
                 <p class="text-sm text-gray-500">Kelola data siswa</p>
             </div>
-            <button
+            <button onclick="window.location='{{ route('siswa.create') }}'"
                 class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
                 Add Siswa
             </button>
@@ -24,15 +24,17 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
+                    @foreach ($siswa as $item)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4">0001</td>
-                        <td class="px-6 py-4 font-medium">Moses</td>
-                        <td class="px-6 py-4 font-medium">moses123</td>
+                        <td class="px-6 py-4">{{ $item->ID_Siswa }}</td>
+                        <td class="px-6 py-4 font-medium">{{ $item->Nama_Siswa }}</td>
+                        <td class="px-6 py-4 font-medium">{{ $item->name }}</td>
                         <td class="px-6 py-4 text-center space-x-2">
-                            <a href="#" class="text-[#57B4BA] hover:underline">Edit</a>
-                            <a href="#" class="text-red-500 hover:underline">Delete</a>
+                            <a href="{{ route('siswa.edit', $item->ID_Siswa) }}" class="text-[#57B4BA] hover:underline">Edit</a>
+                            <a href="{{ route('siswa.destroy', $item->ID_Siswa) }}" class="text-red-500 hover:underline">Delete</a>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
