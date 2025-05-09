@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Departemen');
             $table->unsignedBigInteger('id_user');
             $table->string('NamaOperatorDepartemen');
+            $table->timestamps();
 
             $table->foreign('ID_Departemen')->references('ID_Departemen')->on('departemen')->onDelete('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

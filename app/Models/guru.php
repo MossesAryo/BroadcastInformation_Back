@@ -8,7 +8,7 @@ class guru extends Model
 {
     protected $table = 'guru';
     protected $primaryKey = 'ID_Guru';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['Nama_Guru', 'id_user'];
 

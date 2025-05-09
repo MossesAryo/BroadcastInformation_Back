@@ -8,7 +8,7 @@ class operatordepartemen extends Model
 {
     protected $table = 'operator_departemen';
     protected $primaryKey = 'IDOperator';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['ID_Departemen', 'id_user', 'NamaOperatorDepartemen'];
 
