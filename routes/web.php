@@ -55,9 +55,9 @@ Route::get('/kategori/{id}/destroy', [KategoriController::class, 'destroy'])->na
 
 Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
 Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
-Route::get('/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
+Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
 
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
-Route::put('/siswa/{id}/update', [SiswaController::class, 'update'])->name('siswa.update');
-Route::get('/siswa/{id}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::put('/siswa/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('siswa.update');
+Route::get('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 

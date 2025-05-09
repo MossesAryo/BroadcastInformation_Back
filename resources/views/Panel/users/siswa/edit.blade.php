@@ -31,8 +31,10 @@
             @endif
 
             {{-- enctype="multipart/form-data" --}}
-            <form action="{{ route('siswa.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('siswa.update', [$siswa->ID_Siswa, $siswa->id_user]) }}" method="POST"
+                class="space-y-6">
                 @csrf
+                @method('PUT')
 
                 <!-- Nama Kategori -->
                 <div>
@@ -45,7 +47,7 @@
                 <!-- Isi -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" name="name" id="name" value="{{ $siswa->name }}"
+                    <input type="text" name="name" id="name" value="{{ $siswa->user->name }}"
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>

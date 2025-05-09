@@ -45,7 +45,7 @@
                 <!-- Isi -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" name="name" id="name" value=""
+                    <input type="text" name="nama" id="name" value=""
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>

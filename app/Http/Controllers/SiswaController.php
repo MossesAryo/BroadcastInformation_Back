@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\siswa;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
@@ -33,14 +35,26 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Nama_Siswa' => 'required',
-            'name' => 'required',
+            'Nama_Siswa' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
         ]);
 
-        siswa::create($request->all());
+
+        $user = User::create([
+            'name' => $request->nama,
+            'email' => strtolower(Str::slug($request->nama)) . '@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+
+
+
+        Siswa::create([
+            'Nama_Siswa' => $request->Nama_Siswa,
+            'id_user' => $user->id,
+        ]);
+
         return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan');
     }
-
     /**
      * Display the specified resource.
      */
@@ -62,23 +76,30 @@ class SiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, string $id_user)
     {
         $request->validate([
             'Nama_Siswa' => 'required',
             'name' => 'required',
         ]);
 
-        siswa::find($id)->update($request);
+        User::find($id_user)->update([
+            'name' => $request->name
+        ]);
+        siswa::find($id)->update([
+            'Nama_Siswa' => $request->Nama_Siswa
+        ]);
+
         return redirect()->route('siswa')->with('success', 'Siswa berhasil diedit');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, string $id_user)
     {
         siswa::find($id)->delete();
+        User::find($id_user)->delete();
 
         return redirect(route('siswa'))->with('success', 'Siswa berhasil dihapus');
     }
