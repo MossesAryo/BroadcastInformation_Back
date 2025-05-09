@@ -8,9 +8,9 @@ class departemen extends Model
 {
     protected $table = 'departemen';
     protected $primaryKey = 'ID_Departemen';
+    protected $fillable = ['Nama_Departemen', 'Email_Departemen', 'Tanggal_Dibuat'];
     public $timestamps = false;
 
-    protected $fillable = ['Nama_Departemen'];
 
     public function operatorDepartemen()
     {
