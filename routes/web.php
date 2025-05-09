@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,4 +53,11 @@ Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name
 Route::get('/kategori/{id}/destroy', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
 
+Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
+Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
+Route::get('/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
+
+Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
+Route::put('/siswa/{id}/update', [SiswaController::class, 'update'])->name('siswa.update');
+Route::get('/siswa/{id}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 

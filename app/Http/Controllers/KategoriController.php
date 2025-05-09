@@ -39,7 +39,6 @@ class KategoriController extends Controller
 
         kategoriinformasi::create($request->all());
         return redirect()->route('kategori')->with('success', 'Kategori berhasil ditambahkan');
-
     }
 
     /**
