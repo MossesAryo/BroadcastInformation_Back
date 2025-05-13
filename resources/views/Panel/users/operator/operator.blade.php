@@ -4,10 +4,10 @@
         <div class="bg-white rounded-2xl shadow-md p-6">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Operatpr Departemen</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">Operator Departemen</h2>
                     <p class="text-sm text-gray-500">Kelola data Operator Departemen</p>
                 </div>
-                <button onclick="window.location='{{ route('departemen.create') }}'"
+                <button onclick="window.location='{{ route('create.op') }}'"
                     class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
                     Add Operator
                 </button>

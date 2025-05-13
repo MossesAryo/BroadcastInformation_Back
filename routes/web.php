@@ -83,9 +83,9 @@ Route::put('/departemen/{id}/update', [DepartemenController::class, 'update'])->
 Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
 
 Route::get('/Opdept', [OperatorDepartemenController::class, 'index'])->name('get.op');
-Route::get('/departemen/create', [DepartemenController::class, 'create'])->name('departemen.create');
+Route::get('/Opdept/create', [OperatorDepartemenController::class, 'create'])->name('create.op');
+Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->name('store.op');
 Route::get('/departemen/{id}/edit', [DepartemenController::class, 'edit'])->name('departemen.edit');
-Route::post('/departemen/store', [DepartemenController::class, 'store'])->name('departemen.store');
 Route::put('/departemen/{id}/update', [DepartemenController::class, 'update'])->name('departemen.update');
 Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
 
