@@ -1,13 +1,14 @@
 <?php
 
 
-use App\Http\Controllers\InformasiController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\SiswaController;
+use League\Uri\UriTemplate\Operator;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GuruController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
-use League\Uri\UriTemplate\Operator;
 
 Route::get('/', function () {
     return view('Panel.dashboard');
@@ -89,4 +90,11 @@ Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->na
 Route::get('/Opdept/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit.op');
 Route::put('/Opdept/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update.op');
 Route::get('/Opdept/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy.op');
+
+Route::get('/guru', [GuruController::class, 'index'])->name('get.guru');
+Route::get('/guru/create', [guruController::class, 'create'])->name('create.guru');
+Route::get('/guru/{id}/{id_user}/edit', [guruController::class, 'edit'])->name('edit.guru');
+Route::post('/guru/store', [guruController::class, 'store'])->name('store.guru');
+Route::put('/guru/{id}/{id_user}/update', [guruController::class, 'update'])->name('update.guru');
+Route::get('/guru/{id}/{id_user}/destroy', [guruController::class, 'destroy'])->name('destroy.guru');
 
