@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id('IDKategoriInformasi');
             $table->string('NamaKategori');
             $table->string('Deskripsi');
+            $table->timestamps();
         });
     }
 

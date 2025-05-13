@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('guru', function (Blueprint $table) {
             $table->id('ID_Guru');
             $table->string('Nama_Guru');
-            $table->string('name');
-        
-            $table->foreign('name')->references('name')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('id_user');
             $table->timestamps();
-        });
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');        });
+
     }
 
     /**

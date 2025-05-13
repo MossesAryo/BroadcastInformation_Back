@@ -8,9 +8,9 @@ class operatordepartemen extends Model
 {
     protected $table = 'operator_departemen';
     protected $primaryKey = 'IDOperator';
-    public $timestamps = false;
+    public $timestamps = true;
 
-    protected $fillable = ['ID_Departemen', 'name', 'NamaOperatorDepartemen'];
+    protected $fillable = ['ID_Departemen', 'id_user', 'NamaOperatorDepartemen'];
 
     public function departemen()
     {
@@ -19,7 +19,7 @@ class operatordepartemen extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'name');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function informasi()
