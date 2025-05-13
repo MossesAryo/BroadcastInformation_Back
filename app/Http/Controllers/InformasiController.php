@@ -44,6 +44,20 @@ class InformasiController extends Controller
 
         return redirect()->route('get.info')->with('success', 'Article data has been created');
     }
+    public function show($id)
+    {
+        try {
+            $informasi = Informasi::with(['kategori', 'operator'])
+                ->where('IDInformasi', $id)
+                ->firstOrFail();
+                
+            return view('panel.informasi.viewinformasi', compact('informasi'));
+            
+        } catch (\Exception $e) {
+            return redirect()->route('index.info')
+                ->with('error', 'Informasi tidak ditemukan: ' . $e->getMessage());
+        }
+    }
 
     public function destroy(String $id){
         informasi::find($id)->delete();

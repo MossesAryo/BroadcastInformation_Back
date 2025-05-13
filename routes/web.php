@@ -50,6 +50,7 @@ Route::post('/create', [InformasiController::class, 'store'])
 ->name('post.info');
 Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
 ->name('destroy.info');
+Route::get('/informasi/{id}', [App\Http\Controllers\InformasiController::class, 'show'])->name('show.info');
 
 
 
