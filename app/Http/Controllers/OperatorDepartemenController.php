@@ -77,4 +77,18 @@ class OperatorDepartemenController extends Controller
 
         return redirect()->route('get.op')->with('success', 'Siswa berhasil diedit');
     }
+    public function destroy(string $id)
+    {
+        $operator = operatordepartemen::find($id);
+
+        if (!$operator) {
+            return redirect()->back()->with('error', 'Data operator tidak ditemukan.');
+        }
+        $user = User::find($operator->id_user);
+        if ($user) {
+            $user->delete();
+        }
+        $operator->delete();
+        return redirect()->route('get.op')->with('success', 'Data operator berhasil dihapus.');
+    }
 }

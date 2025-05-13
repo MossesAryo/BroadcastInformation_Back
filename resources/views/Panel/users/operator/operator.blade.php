@@ -36,7 +36,7 @@
                                 <td class="px-6 py-4 text-center space-x-2">
                                     <a href="{{ route('edit.op', [$item->IDOperator,$item->ID_Departemen, $item->id_user]) }}"
                                         class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href=""
+                                    <a href="{{ route('destroy.op', [$item->IDOperator,$item->ID_Departemen, $item->id_user]) }}"
                                         class="text-red-500 hover:underline">Delete</a>
                                 </td>
                             </tr>

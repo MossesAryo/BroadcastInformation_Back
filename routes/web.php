@@ -7,6 +7,7 @@ use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
+use League\Uri\UriTemplate\Operator;
 
 Route::get('/', function () {
     return view('Panel.dashboard');
@@ -87,5 +88,5 @@ Route::get('/Opdept/create', [OperatorDepartemenController::class, 'create'])->n
 Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->name('store.op');
 Route::get('/Opdept/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit.op');
 Route::put('/Opdept/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update.op');
-Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
+Route::get('/Opdept/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy.op');
 
