@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +21,7 @@ Route::get('/siswa', function() {
     return view('Panel.users.siswa');
 });
 
-Route::get('/informasi', function() {
-    return view('Panel.informasi.informasi');
-});
+
 
 Route::get('/guru', function() {
     return view('Panel.users.guru');
@@ -47,6 +47,19 @@ Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
 })->name('user');
 
+
+Route::get('/informasi', [InformasiController::class, 'index'])
+->name('get.info');
+
+Route::get('/informasi/create', [InformasiController::class, 'create'])
+->name('create.info');
+Route::post('/create', [InformasiController::class, 'store'])
+->name('post.info');
+Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
+->name('destroy.info');
+Route::get('/informasi/{id}', [App\Http\Controllers\InformasiController::class, 'show'])->name('show.info');
+
+
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
 Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
 Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
@@ -62,6 +75,7 @@ Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::get('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+
 
 Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
 Route::get('/departemen/create', [DepartemenController::class, 'create'])->name('departemen.create');

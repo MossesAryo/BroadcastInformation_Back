@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('Thumbnail');
             $table->date('TanggalPublikasi');
             $table->enum('TargetDepartemen', ['Umum', 'Khusus']); 
-            $table->enum('Status', ['IsDeclined', 'IsAccepted', 'IsPending']);
+            $table->timestamps();
         
             $table->foreign('IDOperator')->references('IDOperator')->on('operator_departemen')->onDelete('cascade');
             $table->foreign('IDKategoriInformasi')
