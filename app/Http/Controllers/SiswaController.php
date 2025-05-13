@@ -55,13 +55,7 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan');
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

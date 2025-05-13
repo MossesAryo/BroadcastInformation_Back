@@ -10,8 +10,9 @@ use App\Models\operatordepartemen;
 
 class OperatorDepartemenController extends Controller
 {
-    public function index(){
-        return view('panel.users.operator.operator' , [
+    public function index()
+    {
+        return view('panel.users.operator.operator', [
             'operatordepartemen' => operatordepartemen::get()
         ]);
     }
@@ -19,10 +20,10 @@ class OperatorDepartemenController extends Controller
     {
         return view('panel.users.operator.create', [
             'operatordepartemen' => operatordepartemen::get(),
-            'departemen'=> departemen::get()
+            'departemen' => departemen::get()
         ]);
     }
-     public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'NamaOperatorDepartemen' => 'required|string|max:255',
@@ -46,5 +47,34 @@ class OperatorDepartemenController extends Controller
         ]);
 
         return redirect()->route('get.op')->with('success', 'Operator berhasil ditambahkan');
+    }
+    public function edit(string $id)
+    {
+        return view('panel.users.operator.edit', [
+            'operatordepartemen' => operatordepartemen::find($id),
+            'departemen' => departemen::all()
+        ]);
+    }
+    public function update(Request $request, string $id,)
+    {
+        $request->validate([
+            'NamaOperatorDepartemen' => 'required|string|max:255',
+            'ID_Departemen' => 'required',
+            'name' => 'required',
+        ]);
+        $operator = operatordepartemen::findOrFail($id);
+
+
+        User::findOrFail($operator->id_user)->update([
+            'name' => $request->name
+        ]);
+
+
+        $operator->update([
+            'NamaOperatorDepartemen' => $request->NamaOperatorDepartemen,
+            'ID_Departemen' => $request->ID_Departemen,
+        ]);
+
+        return redirect()->route('get.op')->with('success', 'Siswa berhasil diedit');
     }
 }
