@@ -231,7 +231,7 @@ CREATE TABLE `operator_departemen` (
 -- Dumping data for table `operator_departemen`
 --
 
-INSERT INTO `operator_departemen` (`IDOperator`, `ID_Departemen`, `name`, `NamaOperatorDepartemen`) VALUES
+INSERT INTO `operator_departemen` (`IDOperator`, `ID_Departemen`, `IDuser`, `NamaOperatorDepartemen`) VALUES
 (1000000001, 4030000002, 'Dedi Kurniawan', 'Dedi Kurniawan'),
 (1000000002, 4030000001, 'Tika Melani', 'Tika Melani'),
 (1000000003, 4030000003, 'Bagus Setiawan', 'Bagus Setiawan'),
