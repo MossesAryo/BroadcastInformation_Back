@@ -72,7 +72,10 @@ class InformasiController extends Controller
     }
 
     public function destroy(String $id){
-        informasi::find($id)->delete();
+        $data = informasi::find($id);
+        Storage::disk('public')->delete('public/', $data->Thumbnail);
+        $data -> delete();
+
         return back()->with('success','Information has been deleted');
     }
 }
