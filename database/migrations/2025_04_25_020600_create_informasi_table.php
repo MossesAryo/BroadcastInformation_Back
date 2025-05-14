@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('Judul');
             $table->text('Deskripsi');
             $table->string('Thumbnail');
-            $table->date('TanggalPublikasi');
+            $table->dateTime('TanggalMulai');
+            $table->dateTime('TanggalSelesai');
             $table->enum('TargetDepartemen', ['Umum', 'Khusus']); 
             $table->timestamps();
         

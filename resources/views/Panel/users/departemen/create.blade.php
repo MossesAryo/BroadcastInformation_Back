@@ -43,15 +43,6 @@
                         required>
                 </div>
 
-                <!-- Isi -->
-                <div>
-                    <label for="Email_Departemen" class="block text-sm font-medium text-gray-700 mb-1">Email
-                        Departemen</label>
-                    <input type="email" name="Email_Departemen" id="Email_Departemen" value=""
-                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                        required>
-                </div>
-
                 <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit"

@@ -9,7 +9,7 @@
                 </div>
                 <button onclick="window.location='{{ route('departemen.create') }}'"
                     class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-                    Add Siswa
+                    Tambah DEpartemen
                 </button>
             </div>
 

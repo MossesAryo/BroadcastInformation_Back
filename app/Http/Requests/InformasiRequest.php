@@ -24,12 +24,12 @@ class InformasiRequest extends FormRequest
         return [
             'IDOperator' => 'required',
             'IDKategoriInformasi' => 'required',
+            'TanggalMulai' => 'required',
+            'TanggalSelesai' => 'required',
+            'Thumbnail' => 'nullable|image|file|mimes:png,jpg,webp|max:2024',
             'Judul' => 'required',
             'Deskripsi' => 'required',
-            'Thumbnail' => 'nullable|image|file|mimes:png,jpg,webp|max:2024',
             'TargetDepartemen' => 'nullable',
-            'Status' => 'nullable',
-            
         ];
     }
 }

@@ -34,7 +34,6 @@ class DepartemenController extends Controller
     {
         $request->validate([
             'Nama_Departemen' => 'required',
-            'Email_Departemen' => 'required',
         ]);
 
         departemen::create($request->all());

@@ -38,12 +38,24 @@ class InformasiController extends Controller
     {
         $data = $request->validated();
 
-       
-
-        Informasi::create($data);
+        $file = $request->file('Thumbnail'); //img
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension(); //jpg,dll
+        $path = Storage::disk('public')->putFileAs('images', $file, $fileName); //public/back/aasdvndavkd.jpg
+        $data['Thumbnail'] = $path;
+        Informasi::create([
+        'IDOperator' => $request->IDOperator,
+        'IDKategoriInformasi' => $request->IDKategoriInformasi,
+        'TanggalMulai' => $request->TanggalMulai,
+        'TanggalSelesai' => $request->TanggalSelesai,
+        'Thumbnail' => $path,
+        'Judul' => $request->Judul,
+        'Deskripsi' => $request->Deskripsi,
+    ]);
 
         return redirect()->route('get.info')->with('success', 'Article data has been created');
     }
+
+
     public function show($id)
     {
         try {

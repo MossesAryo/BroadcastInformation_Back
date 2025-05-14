@@ -15,6 +15,8 @@ class informasi extends Model
         'IDKategoriInformasi',
         'id',
         'Judul',
+        'TanggalMulai',
+        'TanggalSelesai',
         'Deskripsi',
         'Thumbnail',
         'TanggalPublikasi',
