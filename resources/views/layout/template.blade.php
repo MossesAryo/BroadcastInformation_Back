@@ -32,6 +32,7 @@
         .border-theme { border-color: #57B4BA; }
         .hover\:bg-theme-dark:hover { background-color: #3E979D; }
     </style>
+     @yield('css')
 </head>
 <body class="bg-gray-100">
     <div x-data="{ sidebarOpen: false }" class="min-h-screen flex flex-col">
@@ -57,6 +58,7 @@
 
 
 </div>
+ @yield('scripts')
 </body>
 <!-- Footer -->
 @include('layout.footer')
