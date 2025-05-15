@@ -84,7 +84,7 @@ class OperatorDepartemenController extends Controller
         if (!$operator) {
             return redirect()->back()->with('error', 'Data operator tidak ditemukan.');
         }
-        $user = User::find($operator->id_user);
+        $user = User::find($operator->username);
         if ($user) {
             $user->delete();
         }
