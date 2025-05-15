@@ -33,7 +33,7 @@
 
             {{-- enctype="multipart/form-data" --}}
             <form
-                action="{{ route('update.op', [$operatordepartemen->IDOperator, $operatordepartemen->ID_Departemen, $operatordepartemen->id_user]) }}"
+                action="{{ route('update.op', [$operatordepartemen->IDOperator, $operatordepartemen->ID_Departemen]) }}"
                 method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
@@ -50,8 +50,8 @@
 
                 <!-- Isi -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" name="name" id="name" value="{{ $operatordepartemen->user->name }}"
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" name="username" id="username" value="{{ $operatordepartemen->username }}"
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>

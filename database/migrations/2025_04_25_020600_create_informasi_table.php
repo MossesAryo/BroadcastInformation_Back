@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('IDInformasi');
             $table->unsignedBigInteger('IDOperator');
             $table->unsignedBigInteger('IDKategoriInformasi');
-            $table->unsignedBigInteger('IDUser'); 
             $table->string('Judul');
             $table->text('Deskripsi');
             $table->string('Thumbnail');
@@ -29,7 +28,7 @@ return new class extends Migration
              ->references('IDKategoriInformasi')
              ->on('kategori_informasi')
              ->onDelete('cascade');
-            $table->foreign('IDUser')->references('id')->on('users')->onDelete('cascade');
+            
         });
     }
 

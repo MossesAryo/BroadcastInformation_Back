@@ -31,7 +31,7 @@
             @endif
 
             {{-- enctype="multipart/form-data" --}}
-            <form action="{{ route('update.guru', [$guru->ID_Guru, $guru->id_user]) }}" method="POST"
+            <form action="{{ route('update.guru', [$guru->ID_Guru, $guru->username]) }}" method="POST"
                 class="space-y-6">
                 @csrf
                 @method('PUT')
@@ -46,8 +46,8 @@
 
                 <!-- Isi -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" name="name" id="name" value="{{ $guru->user->name }}"
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" name="username" id="username" value="{{ $guru->username }}"
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>

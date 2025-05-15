@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
-     public function index()
+    public function index()
     {
         return view('panel.users.guru.guru', [
             'guru' => guru::get(),
@@ -30,25 +30,25 @@ class GuruController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'Nama_Guru' => 'required|string|max:255',
-        'name' => 'required|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'Nama_Guru' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+        ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => strtolower(Str::slug($request->name)) . '@gmail.com',
-        'password' => bcrypt('password'),
-    ]);
+        $user = User::create([
+            'username' => $request->username,
+            'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
 
-    guru::create([
-        'Nama_Guru' => $request->Nama_Guru,
-        'id_user' => $user->id,
-    ]);
+        guru::create([
+            'Nama_Guru' => $request->Nama_Guru,
+            'username' => $user->username,
+        ]);
 
-    return redirect()->route('get.guru')->with('success', 'Guru berhasil ditambahkan');
-}
+        return redirect()->route('get.guru')->with('success', 'Guru berhasil ditambahkan');
+    }
 
 
 
@@ -69,12 +69,13 @@ class GuruController extends Controller
     {
         $request->validate([
             'Nama_Guru' => 'required',
-            'name' => 'required',
+            'username' => 'required',
         ]);
 
-        User::find($id_user)->update([
-            'name' => $request->name
+        User::where('username', $id_user)->update([
+            'username' => $request->username
         ]);
+
         guru::find($id)->update([
             'Nama_Guru' => $request->Nama_Guru
         ]);
@@ -82,14 +83,18 @@ class GuruController extends Controller
         return redirect()->route('get.guru')->with('success', 'guru berhasil diedit');
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id, string $id_user)
     {
-        guru::find($id)->delete();
-        User::find($id_user)->delete();
+        $guru = guru::find($id);
+        $user = User::find($id_user);
+        $guru->delete();
+        $user->delete();
 
-        return redirect(route('get.guru'))->with('success', 'guru berhasil dihapus');
+
+        return redirect(route('get.guru'))->with('success', 'Guru berhasil dihapus');
     }
 }

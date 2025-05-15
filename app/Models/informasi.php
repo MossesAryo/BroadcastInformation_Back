@@ -13,7 +13,6 @@ class informasi extends Model
     protected $fillable = [
         'IDOperator',
         'IDKategoriInformasi',
-        'id',
         'Judul',
         'TanggalMulai',
         'TanggalSelesai',

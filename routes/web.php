@@ -8,6 +8,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\KalenderController;
 use App\Http\Controllers\OperatorDepartemenController;
 
 Route::get('/', function () {
@@ -41,9 +42,6 @@ Route::get('/history', function() {
     return view('Panel.history.history');
 })->name('history');
 
-Route::get('/kalender', function() {
-    return view('Panel.kalender.kalender');
-})->name('user');
 
 Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
@@ -59,7 +57,7 @@ Route::post('/create', [InformasiController::class, 'store'])
 ->name('post.info');
 Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
 ->name('destroy.info');
-Route::get('/informasi/{id}', [App\Http\Controllers\InformasiController::class, 'show'])->name('show.info');
+Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
 
 
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
@@ -97,4 +95,7 @@ Route::get('/guru/{id}/{id_user}/edit', [guruController::class, 'edit'])->name('
 Route::post('/guru/store', [guruController::class, 'store'])->name('store.guru');
 Route::put('/guru/{id}/{id_user}/update', [guruController::class, 'update'])->name('update.guru');
 Route::get('/guru/{id}/{id_user}/destroy', [guruController::class, 'destroy'])->name('destroy.guru');
+
+Route::get('/kalender', [KalenderController::class, 'index'])
+->name('get.kalender');
 

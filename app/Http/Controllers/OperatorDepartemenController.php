@@ -28,13 +28,13 @@ class OperatorDepartemenController extends Controller
         $request->validate([
             'NamaOperatorDepartemen' => 'required|string|max:255',
             'ID_Departemen' => 'required',
-            'name' => 'required',
+            'username' => 'required',
         ]);
 
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => strtolower(Str::slug($request->name)) . '@gmail.com',
+            'username' => $request->username,
+            'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -43,7 +43,7 @@ class OperatorDepartemenController extends Controller
         operatordepartemen::create([
             'NamaOperatorDepartemen' => $request->NamaOperatorDepartemen,
             'ID_Departemen' => $request->ID_Departemen,
-            'id_user' => $user->id,
+            'username' => $user->username,
         ]);
 
         return redirect()->route('get.op')->with('success', 'Operator berhasil ditambahkan');
@@ -55,18 +55,18 @@ class OperatorDepartemenController extends Controller
             'departemen' => departemen::all()
         ]);
     }
-    public function update(Request $request, string $id,)
+    public function update(Request $request, string $id)
     {
         $request->validate([
             'NamaOperatorDepartemen' => 'required|string|max:255',
             'ID_Departemen' => 'required',
-            'name' => 'required',
+            'username' => 'required',
         ]);
         $operator = operatordepartemen::findOrFail($id);
 
 
-        User::findOrFail($operator->id_user)->update([
-            'name' => $request->name
+        User::findOrFail($operator->username)->update([
+            'username' => $request->username
         ]);
 
 

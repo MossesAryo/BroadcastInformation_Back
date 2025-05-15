@@ -36,13 +36,13 @@ class SiswaController extends Controller
     {
         $request->validate([
             'Nama_Siswa' => 'required|string|max:255',
-            'nama' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
         ]);
 
 
         $user = User::create([
-            'name' => $request->nama,
-            'email' => strtolower(Str::slug($request->nama)) . '@gmail.com',
+            'username' => $request->username,
+            'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -50,7 +50,7 @@ class SiswaController extends Controller
 
         Siswa::create([
             'Nama_Siswa' => $request->Nama_Siswa,
-            'id_user' => $user->id,
+            'username' => $user->username,
         ]);
 
         return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan');
@@ -74,11 +74,11 @@ class SiswaController extends Controller
     {
         $request->validate([
             'Nama_Siswa' => 'required',
-            'name' => 'required',
+            'username' => 'required',
         ]);
 
         User::find($id_user)->update([
-            'name' => $request->name
+            'username' => $request->username
         ]);
         siswa::find($id)->update([
             'Nama_Siswa' => $request->Nama_Siswa

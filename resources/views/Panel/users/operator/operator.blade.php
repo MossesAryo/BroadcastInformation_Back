@@ -34,9 +34,9 @@
                                 <td class="px-6 py-4 font-medium">{{ $item->user->email }}
                                 <td class="px-6 py-4 font-medium">{{ $item->created_at }}
                                 <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('edit.op', [$item->IDOperator,$item->ID_Departemen, $item->id_user]) }}"
+                                    <a href="{{ route('edit.op', [$item->IDOperator,$item->ID_Departemen]) }}"
                                         class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href="{{ route('destroy.op', [$item->IDOperator,$item->ID_Departemen, $item->id_user]) }}"
+                                    <a href="{{ route('destroy.op', [$item->IDOperator,$item->ID_Departemen]) }}"
                                         class="text-red-500 hover:underline">Delete</a>
                                 </td>
                             </tr>

@@ -28,11 +28,11 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4">{{ $item->ID_Guru }}</td>
                                 <td class="px-6 py-4 font-medium">{{ $item->Nama_Guru }}</td>
-                                <td class="px-6 py-4 font-medium">{{ $item->user->name }}</td>
+                                <td class="px-6 py-4 font-medium">{{ $item->username }}</td>
                                 <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('edit.guru', [$item->ID_Guru, $item->id_user]) }}"
+                                    <a href="{{ route('edit.guru', [$item->ID_Guru, $item->username]) }}"
                                         class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href="{{ route('destroy.guru', [$item->ID_Guru, $item->id_user]) }}"
+                                    <a href="{{ route('destroy.guru', [$item->ID_Guru, $item->username]) }}"
                                         class="text-red-500 hover:underline">Delete</a>
                                 </td>
                             </tr>
