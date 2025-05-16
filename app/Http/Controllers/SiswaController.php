@@ -41,7 +41,7 @@ class SiswaController extends Controller
         }
 
         // Get paginated results (10 per page)
-        $siswa = $query->paginate(1);
+        $siswa = $query->paginate(10);
 
         // Append query parameters to pagination links
         $siswa->appends([
