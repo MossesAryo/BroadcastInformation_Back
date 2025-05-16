@@ -22,7 +22,7 @@ return new class extends Migration
              ->references('IDInformasi')
              ->on('informasi')
              ->onDelete('cascade')
-             
+             ->onUpdate('cascade')
              ;
             
         });
