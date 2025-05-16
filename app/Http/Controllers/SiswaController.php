@@ -12,10 +12,55 @@ class SiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'all');
+        $query = siswa::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('Nama_Siswa', 'like', "%{$search}%")
+                    ->orWhere('ID_Siswa', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('email', 'like', "%{$search}%")
+                            ->orWhere('username', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Apply sort filter
+        if ($sort === 'latest') {
+            $query->reorder()->orderBy('created_at', 'desc');
+        } elseif ($sort === 'earliest') {
+            $query->reorder()->orderBy('created_at', 'asc');
+        } elseif ($sort === 'all') {
+            // Default sorting from the global scope will apply
+        }
+
+        // Get paginated results (10 per page)
+        $siswa = $query->with('user')->paginate(10);
+
+        // Append query parameters to pagination links
+        $siswa->appends([
+            'search' => $search,
+            'sort' => $sort
+        ]);
+
+        // Check if request is AJAX
+        if ($request->ajax() || $request->input('ajax')) {
+            return response()->json([
+                'siswa' => $siswa,
+                'search' => $search,
+                'sort' => $sort
+            ]);
+        }
+
         return view('panel.users.siswa.siswa', [
-            'siswa' => siswa::get(),
+            'siswa' => $siswa,
+            'search' => $search,
+            'sort' => $sort
         ]);
     }
 
@@ -39,14 +84,11 @@ class SiswaController extends Controller
             'username' => 'required|string|max:255',
         ]);
 
-
         $user = User::create([
             'username' => $request->username,
             'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
             'password' => bcrypt('password'),
         ]);
-
-
 
         Siswa::create([
             'Nama_Siswa' => $request->Nama_Siswa,
@@ -55,7 +97,6 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -80,6 +121,7 @@ class SiswaController extends Controller
         User::find($id_user)->update([
             'username' => $request->username
         ]);
+
         siswa::find($id)->update([
             'Nama_Siswa' => $request->Nama_Siswa
         ]);
@@ -94,7 +136,6 @@ class SiswaController extends Controller
     {
         siswa::find($id)->delete();
         User::find($id_user)->delete();
-
         return redirect(route('siswa'))->with('success', 'Siswa berhasil dihapus');
     }
 }

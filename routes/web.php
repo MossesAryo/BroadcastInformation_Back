@@ -72,7 +72,7 @@ Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.cre
 Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('siswa.update');
-Route::get('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::delete('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 
 
 Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
@@ -101,4 +101,3 @@ Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name
 Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
 Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
 
-    
