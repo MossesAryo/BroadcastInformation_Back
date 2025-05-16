@@ -18,7 +18,6 @@ class informasi extends Model
         'TanggalSelesai',
         'Deskripsi',
         'Thumbnail',
-        'TanggalPublikasi',
         'TargetDepartemen',
         'Status'
     ];

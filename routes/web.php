@@ -96,6 +96,9 @@ Route::post('/guru/store', [guruController::class, 'store'])->name('store.guru')
 Route::put('/guru/{id}/{id_user}/update', [guruController::class, 'update'])->name('update.guru');
 Route::get('/guru/{id}/{id_user}/destroy', [guruController::class, 'destroy'])->name('destroy.guru');
 
-Route::get('/kalender', [KalenderController::class, 'index'])
-->name('get.kalender');
+Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
+Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
+Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
+Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
 
+    
