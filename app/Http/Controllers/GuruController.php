@@ -9,10 +9,55 @@ use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+         $search = $request->input('search');
+        $sort = $request->input('sort', 'all');
+        $query = guru::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('Nama_Guru', 'like', "%{$search}%")
+                    ->orWhere('ID_Guru', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('email', 'like', "%{$search}%")
+                            ->orWhere('username', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Apply sort filter
+        if ($sort === 'latest') {
+            $query->reorder()->orderBy('created_at', 'desc');
+        } elseif ($sort === 'earliest') {
+            $query->reorder()->orderBy('created_at', 'asc');
+        } elseif ($sort === 'all') {
+            // Default sorting from the global scope will apply
+        }
+
+        // Get paginated results (10 per page)
+        $guru = $query->with('user')->paginate(10);
+
+        // Append query parameters to pagination links
+        $guru->appends([
+            'search' => $search,
+            'sort' => $sort
+        ]);
+
+        // Check if request is AJAX
+        if ($request->ajax() || $request->input('ajax')) {
+            return response()->json([
+                'guru' => $guru,
+                'search' => $search,
+                'sort' => $sort
+            ]);
+        }
+
         return view('panel.users.guru.guru', [
-            'guru' => guru::get(),
+            'guru' => $guru,
+            'search' => $search,
+            'sort' => $sort
         ]);
     }
 
