@@ -1,45 +1,274 @@
 @extends('layout.template')
 @section('main')
-    <div class="p-4">
-        <div class="bg-white rounded-2xl shadow-md p-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Siswa</h2>
-                    <p class="text-sm text-gray-500">Kelola data siswa</p>
-                </div>
-                <button onclick="window.location='{{ route('siswa.create') }}'"
-                    class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-                    Add Siswa
-                </button>
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-700">Siswa</h2>
             </div>
 
-            <div class="overflow-x-auto rounded-lg">
-                <table class="min-w-full bg-white text-gray-700 text-sm">
-                    <thead class="bg-[#f8fafc] text-gray-600 uppercase text-xs">
+            <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
+                onclick="window.location='{{ route('create.info') }}'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                Tambah Siswa
+            </button>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <form action="{{ route('siswa') }}" method="GET"
+            class="bg-white shadow-md rounded-md p-4 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0">
+            <!-- Search Box -->
+            <div class="flex items-center">
+                <div class="relative">
+                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cari siswa..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <div class="absolute left-3 top-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort Filter -->
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-medium text-gray-600">Urutan:</label>
+                <select name="sort" onchange="this.form.submit()"
+                    class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <option value="all" {{ ($sort ?? '') == 'all' ? 'selected' : '' }}>Default</option>
+                    <option value="latest" {{ ($sort ?? '') == 'latest' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="earliest" {{ ($sort ?? '') == 'earliest' ? 'selected' : '' }}>Terlama</option>
+                </select>
+
+                <!-- Search Button -->
+                <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md">
+                    Cari
+                </button>
+
+                <!-- Reset Button -->
+                @if (($search ?? '') || ($sort ?? '') != 'all')
+                    <a href="{{ route('siswa') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md">
+                        Reset
+                    </a>
+                @endif
+            </div>
+        </form>
+
+        <!-- Broadcast Table Section -->
+        <div class="bg-white shadow-md rounded-md overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <!-- Table Header -->
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIS</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Body -->
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($siswa as $item)
                         <tr>
-                            <th class="px-6 py-3 text-left">ID</th>
-                            <th class="px-6 py-3 text-left">Nama</th>
-                            <th class="px-6 py-3 text-left">Username</th>
-                            <th class="px-6 py-3 text-center">Aksi</th>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->ID_Siswa }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->Nama_Siswa }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $item->user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->created_at }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex space-x-2">
+                                    <button title="Edit"
+                                        onclick="window.location='{{ route('siswa.edit', [$item->ID_Siswa, $item->username]) }}'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="#57B4BA"
+                                            class="w-5 h-5">
+                                            <path
+                                                d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
+                                        </svg>
+                                    </button>
+
+
+                                    <button class="text-red-600 hover:text-red-900" title="Delete"
+                                        onclick="openDeleteModal('{{ $item->ID_Siswa, $item->username }}')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($siswa as $item)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">{{ $item->ID_Siswa }}</td>
-                                <td class="px-6 py-4 font-medium">{{ $item->Nama_Siswa }}</td>
-                                <td class="px-6 py-4 font-medium">{{ $item->username }}</td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('siswa.edit', [$item->ID_Siswa, $item->username]) }}"
-                                        class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href="{{ route('siswa.destroy', [$item->ID_Siswa, $item->username]) }}"
-                                        class="text-red-500 hover:underline">Delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada informasi.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <!-- Pagination Section -->
+            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
+                <!-- Mobile Pagination -->
+                <div class="flex-1 flex justify-between sm:hidden">
+                    @if ($siswa->onFirstPage())
+                        <span
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-500 bg-gray-100">
+                            Previous
+                        </span>
+                    @else
+                        <a href="{{ $siswa->previousPageUrl() }}"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </a>
+                    @endif
+
+                    @if ($siswa->hasMorePages())
+                        <a href="{{ $siswa->nextPageUrl() }}"
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </a>
+                    @else
+                        <span
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-500 bg-gray-100">
+                            Next
+                        </span>
+                    @endif
+                </div>
+
+                <!-- Desktop Pagination -->
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <!-- Results Summary -->
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            Showing <span class="font-medium">{{ $siswa->firstItem() ?? 0 }}</span> to
+                            <span class="font-medium">{{ $siswa->lastItem() ?? 0 }}</span> of
+                            <span class="font-medium">{{ $siswa->total() }}</span> results
+                        </p>
+                    </div>
+
+                    <!-- Page Navigation with Custom Colors -->
+                    <div>
+                        @if ($siswa->hasPages())
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                {{-- Previous Page Link --}}
+                                @if ($siswa->onFirstPage())
+                                    <span
+                                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-gray-300 cursor-not-allowed">
+                                        <span class="sr-only">Previous</span>
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                @else
+                                    <a href="{{ $siswa->previousPageUrl() }}"
+                                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <span class="sr-only">Previous</span>
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                @endif
+
+                                {{-- Pagination Elements --}}
+                                @foreach ($siswa->getUrlRange(1, $siswa->lastPage()) as $page => $url)
+                                    @if ($page == $siswa->currentPage())
+                                        <span
+                                            class="relative inline-flex items-center px-4 py-2 border border-teal-500 bg-teal-500 text-sm font-medium text-white"
+                                            style="background-color: #57B4BA; border-color: #57B4BA;">
+                                            {{ $page }}
+                                        </span>
+                                    @else
+                                        <a href="{{ $url }}"
+                                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                            {{ $page }}
+                                        </a>
+                                    @endif
+                                @endforeach
+
+                                {{-- Next Page Link --}}
+                                @if ($siswa->hasMorePages())
+                                    <a href="{{ $siswa->nextPageUrl() }}"
+                                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <span class="sr-only">Next</span>
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                @else
+                                    <span
+                                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-gray-300 cursor-not-allowed">
+                                        <span class="sr-only">Next</span>
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                @endif
+                            </nav>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Mobile Pagination with Custom Colors -->
+                <div class="flex-1 flex justify-between sm:hidden">
+                    @if ($siswa->onFirstPage())
+                        <span
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-500 bg-gray-100 cursor-not-allowed">
+                            Previous
+                        </span>
+                    @else
+                        <a href="{{ $siswa->previousPageUrl() }}"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </a>
+                    @endif
+
+                    @if ($siswa->hasMorePages())
+                        <a href="{{ $siswa->nextPageUrl() }}"
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-teal-500 text-sm font-medium rounded-md text-white hover:bg-teal-600"
+                            style="background-color: #57B4BA; border-color: #57B4BA;">
+                            Next
+                        </a>
+                    @else
+                        <span
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-500 bg-gray-100 cursor-not-allowed">
+                            Next
+                        </span>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
+
+    {{-- Delete Modal --}}
+    @include('Panel.users.siswa.delete')
 @endsection
