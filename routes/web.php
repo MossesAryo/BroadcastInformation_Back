@@ -58,6 +58,8 @@ Route::post('/create', [InformasiController::class, 'store'])
 Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
 ->name('destroy.info');
 Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
+Route::get('informasi/data', [InformasiController::class, 'getData'])->name('informasi.data');
+Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
 
 
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
