@@ -1,45 +1,171 @@
 @extends('layout.template')
 @section('main')
-    <div class="p-4">
-        <div class="bg-white rounded-2xl shadow-md p-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Guru</h2>
-                    <p class="text-sm text-gray-500">Kelola data Guru</p>
-                </div>
-                <button onclick="window.location='{{ route('create.guru') }}'"
-                    class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-                    Add Guru
-                </button>
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-700">Guru</h2>
             </div>
 
-            <div class="overflow-x-auto rounded-lg">
-                <table class="min-w-full bg-white text-gray-700 text-sm">
-                    <thead class="bg-[#f8fafc] text-gray-600 uppercase text-xs">
-                        <tr>
-                            <th class="px-6 py-3 text-left">ID</th>
-                            <th class="px-6 py-3 text-left">Nama</th>
-                            <th class="px-6 py-3 text-left">Username</th>
-                            <th class="px-6 py-3 text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($guru as $item)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">{{ $item->ID_Guru }}</td>
-                                <td class="px-6 py-4 font-medium">{{ $item->Nama_Guru }}</td>
-                                <td class="px-6 py-4 font-medium">{{ $item->username }}</td>
-                                <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('edit.guru', [$item->ID_Guru, $item->username]) }}"
-                                        class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href="{{ route('destroy.guru', [$item->ID_Guru, $item->username]) }}"
-                                        class="text-red-500 hover:underline">Delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
+                onclick="window.location='{{ route('create.guru') }}'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                Tambah Guru
+            </button>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div
+            class="bg-white shadow-md rounded-md p-4 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0">
+            <!-- Search Box -->
+            <div class="flex items-center">
+                <div class="relative">
+                    <input type="text" id="customSearch" placeholder="Cari broadcast..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <div class="absolute left-3 top-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+
+                </div>
+                <div class="p-3">
+                    <label for="entryLength" class="mr-2 text-sm text-gray-600">Tampilkan</label>
+                    <select id="entryLength"
+                        class="py-1 px-2 border border-gray-300 rounded-md focus:ring-teal-500 text-sm">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
             </div>
+
+
+
+        </div>
+
+        <!-- Broadcast Table Section -->
+        <div class="bg-white shadow-md rounded-md overflow-hidden">
+            <table id="gurutable" class="min-w-full divide-y divide-gray-200">
+                <!-- Table Header -->
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIP</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email     
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal
+                        </th>
+                        
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- DataTable will populate this -->
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#gurutable').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ url()->current() }}',
+                    data: function(d) {
+
+                    }
+                },
+                columns: [{
+                        data: 'ID_Guru',
+                        name: 'ID_Guru',
+                        searchable: false
+                    },
+                    {
+                        data: 'Nama_Guru',
+                        name: 'Nama_Guru'
+                    },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                
+                    {
+                        data: 'button',
+                        name: 'button',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+    
+                dom: 'rtip',
+                language: {
+                    processing: "Memproses...",
+                    lengthMenu: "Tampilkan _MENU_ entri",
+                    zeroRecords: "Tidak ada data yang ditemukan",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                    infoFiltered: "(disaring dari _MAX_ total entri)",
+                    search: "Cari:",
+                    paginate: {
+                        first: "Pertama",
+                        last: "Terakhir",
+                        next: "Selanjutnya",
+                        previous: "Sebelumnya"
+                    }
+                },
+                pageLength: 10,
+                // Custom styling for pagination
+                drawCallback: function() {
+                    // Style the pagination to match your design
+                    $('.dataTables_paginate .paginate_button').addClass(
+                        'relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50'
+                    );
+                    $('.dataTables_paginate .paginate_button.current').addClass(
+                        'z-10 bg-teal-50 border-teal-500 text-teal-600').removeClass(
+                        'text-gray-500');
+                    $('.dataTables_info').addClass('text-sm text-gray-700');
+                }
+            });
+            $('#entryLength').on('change', function() {
+                table.page.len($(this).val()).draw();
+            });
+            // Custom search functionality
+            $('#customSearch').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+            // Style the DataTable elements to match your design
+            $('.dataTables_wrapper').addClass('bg-white');
+            $('.dataTables_info').addClass('px-4 py-3 text-sm text-gray-700');
+            $('.dataTables_paginate').addClass(
+                'px-4 py-3 flex items-center justify-between border-t border-gray-200');
+        });
+    </script>
+
 @endsection
