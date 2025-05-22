@@ -18,6 +18,7 @@ class InformasiController extends Controller
 
         if (request()->ajax()) {
             $informasi = informasi::with(['kategori', 'operator'])->latest()->get();
+      
             return DataTables::of($informasi)
                 ->addIndexColumn()
                 ->addcolumn('IDKategoriInformasi', function ($informasi) {
