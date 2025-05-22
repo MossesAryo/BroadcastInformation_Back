@@ -6,63 +6,74 @@ use App\Models\User;
 use App\Models\siswa;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $sort = $request->input('sort', 'all');
-        $query = siswa::query();
+        if (request()->ajax()) {
+            $query = siswa::with('user')->latest();
 
-        // Apply search filter if provided
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('Nama_Siswa', 'like', "%{$search}%")
-                    ->orWhere('ID_Siswa', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('email', 'like', "%{$search}%")
-                            ->orWhere('username', 'like', "%{$search}%");
-                    });
-            });
+            // Handle search query
+            if ($search = request('search.value')) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('Nama_Siswa', 'like', "%{$search}%")
+                        ->orWhere('ID_Siswa', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($q2) use ($search) {
+                            $q2->where('email', 'like', "%{$search}%");
+                        });
+                });
+            }
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('ID_Siswa', function ($siswa) {
+                    return $siswa->ID_Siswa;
+                })
+                ->addColumn('Nama_Siswa', function ($siswa) {
+                    return $siswa->Nama_Siswa;
+                })
+                ->addColumn('email', function ($siswa) {
+                    return $siswa->user->email ?? '-';
+                })
+                ->addColumn('created_at', function ($siswa) {
+                    return $siswa->created_at->format('Y-m-d H:i');
+                })
+                ->addColumn('button', function ($siswa) {
+                    return '
+                        <div class="flex justify-center space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900" title="Edit"
+                                onclick="window.location.href=\'' . route('siswa.edit', [$siswa->ID_Siswa, $siswa->username]) . '\'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                                    <path fill-rule="evenodd" d="M2 15a1 1 0 011-1h12a1 1 0 110 2H3a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+
+                            <button class="text-red-600 hover:text-red-900" title="Hapus"
+                                onclick="openDeleteModal(\'' . $siswa->ID_Siswa . '\')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>';
+                })
+                ->rawColumns(['button'])
+                ->make(true);
         }
 
-        // Apply sort filter
-        if ($sort === 'latest') {
-            $query->reorder()->orderBy('created_at', 'desc');
-        } elseif ($sort === 'earliest') {
-            $query->reorder()->orderBy('created_at', 'asc');
-        } elseif ($sort === 'all') {
-            // Default sorting from the global scope will apply
-        }
-
-        // Get paginated results (10 per page)
-        $siswa = $query->with('user')->paginate(10);
-
-        // Append query parameters to pagination links
-        $siswa->appends([
-            'search' => $search,
-            'sort' => $sort
-        ]);
-
-        // Check if request is AJAX
-        if ($request->ajax() || $request->input('ajax')) {
-            return response()->json([
-                'siswa' => $siswa,
-                'search' => $search,
-                'sort' => $sort
-            ]);
-        }
-
-        return view('panel.users.siswa.siswa', [
-            'siswa' => $siswa,
-            'search' => $search,
-            'sort' => $sort
+        $siswa = siswa::with('user')->latest()->get();
+        return view('Panel.users.siswa.siswa', [
+            'siswa' => $siswa
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -101,7 +112,7 @@ class SiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, string $id_user)
     {
         return view('panel.users.siswa.edit', [
             'siswa' => siswa::find($id),
@@ -134,6 +145,8 @@ class SiswaController extends Controller
      */
     public function destroy(string $id, string $id_user)
     {
+        // dd($id, $id_user);
+
         siswa::find($id)->delete();
         User::find($id_user)->delete();
         return redirect(route('siswa'))->with('success', 'Siswa berhasil dihapus');
