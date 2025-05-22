@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('Thumbnail');
             $table->dateTime('TanggalMulai');
             $table->dateTime('TanggalSelesai');
-            $table->enum('TargetDepartemen', ['Umum', 'Khusus']); 
+        
             $table->timestamps();
         
             $table->foreign('IDOperator')->references('IDOperator')->on('operator_departemen')->onDelete('cascade');
