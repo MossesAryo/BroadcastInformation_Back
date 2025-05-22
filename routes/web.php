@@ -20,19 +20,6 @@ Route::get('/users', function() {
 });
 
 
-Route::get('/siswa', function() {
-    return view('Panel.users.siswa');
-});
-
-
-
-Route::get('/guru', function() {
-    return view('Panel.users.guru');
-});
-
-// Route::get('/departemen', function() {
-//     return view('Panel.users.departemen.departemen');
-// }) ->name('departemen');
 
 Route::get('/notifikasi', function() {
     return view('Panel.notifikasi.notifikasi');
@@ -92,11 +79,12 @@ Route::put('/Opdept/{id}/update', [OperatorDepartemenController::class, 'update'
 Route::get('/Opdept/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy.op');
 
 Route::get('/guru', [GuruController::class, 'index'])->name('get.guru');
-Route::get('/guru/create', [guruController::class, 'create'])->name('create.guru');
-Route::get('/guru/{id}/{id_user}/edit', [guruController::class, 'edit'])->name('edit.guru');
-Route::post('/guru/store', [guruController::class, 'store'])->name('store.guru');
-Route::put('/guru/{id}/{id_user}/update', [guruController::class, 'update'])->name('update.guru');
-Route::delete('/guru/{id}/{id_user}/destroy', [guruController::class, 'destroy'])->name('destroy.guru');
+Route::get('/guru/create', [GuruController::class, 'create'])->name('create.guru');
+Route::get('/guru/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('edit.guru');
+Route::post('/guru/store', [GuruController::class, 'store'])->name('store.guru');
+Route::put('/guru/{id}/{id_user}/update', [GuruController::class, 'update'])->name('update.guru');
+Route::get('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy.guru');
+
 
 Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
 Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
