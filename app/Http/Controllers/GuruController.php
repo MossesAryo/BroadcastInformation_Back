@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GuruExport;
 use App\Models\guru;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class GuruController extends Controller
@@ -48,6 +50,10 @@ class GuruController extends Controller
                 ->make();
         }
         return view('Panel.users.guru.guru');
+    }
+     public function export() 
+    {
+        return Excel::download(new GuruExport, 'Data_Guru.xlsx');
     }
 
     /**

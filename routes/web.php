@@ -84,7 +84,7 @@ Route::get('/guru/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('
 Route::post('/guru/store', [GuruController::class, 'store'])->name('store.guru');
 Route::put('/guru/{id}/{id_user}/update', [GuruController::class, 'update'])->name('update.guru');
 Route::get('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy.guru');
-
+Route::get('/guru/export/', [GuruController::class, 'export'])->name('export.excel.guru');
 
 Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
 Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
