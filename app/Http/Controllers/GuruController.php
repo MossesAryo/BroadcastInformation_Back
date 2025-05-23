@@ -68,28 +68,43 @@ class GuruController extends Controller
 
     public function exportword()
     {
-        $guru = Guru::with('user')->get();
+       $guru = Guru::with('user')->get();
 
-        $phpWord = new PhpWord();
-        $section = $phpWord->addSection();
+    $phpWord = new PhpWord();
+    $section = $phpWord->addSection();
 
-        $section->addText('Daftar Guru', ['bold' => true, 'size' => 16]);
-        $section->addTextBreak();
+    
+    $section->addText('Daftar Guru', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+    $section->addTextBreak();
 
-        foreach ($guru as $g) {
-            $section->addText("NIP: {$g->ID_Guru}");
-            $section->addText("Nama: {$g->Nama_Guru}");
-            $section->addText("Email: {$g->user->email}");
-            $section->addTextBreak();
-        }
+    
+    $table = $section->addTable([
+        'borderSize' => 6,
+        'borderColor' => '999999',
+        'cellMargin' => 50
+    ]);
 
-        $filename = 'data_guru.docx';
-        $path = storage_path("app/public/{$filename}");
+    
+    $table->addRow();
+    $table->addCell(3000)->addText('NIP');
+    $table->addCell(5000)->addText('Nama Guru');
+    $table->addCell(6000)->addText('Email');
 
-        $writer = IOFactory::createWriter($phpWord, 'Word2007');
-        $writer->save($path);
+    
+    foreach ($guru as $g) {
+        $table->addRow();
+        $table->addCell()->addText($g->ID_Guru);
+        $table->addCell()->addText($g->Nama_Guru);
+        $table->addCell()->addText($g->user->email ?? '-');
+    }
 
-        return response()->download($path)->deleteFileAfterSend(true);
+    $filename = 'data_guru.docx';
+    $path = storage_path("app/public/{$filename}");
+
+    $writer = IOFactory::createWriter($phpWord, 'Word2007');
+    $writer->save($path);
+
+    return response()->download($path)->deleteFileAfterSend(true);
     }
 
     /**
