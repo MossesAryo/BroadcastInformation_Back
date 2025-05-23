@@ -65,6 +65,9 @@ Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::delete('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::get('/siswa/export/excel', [SiswaController::class, 'exportexcel'])->name('export.excel.siswa');
+Route::get('/siswa/export/pdf', [SiswaController::class, 'exportpdf'])->name('export.pdf.siswa');
+Route::get('/siswa/export/word', [SiswaController::class, 'exportword'])->name('export.word.siswa');
 
 
 Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
@@ -73,6 +76,7 @@ Route::get('/departemen/{id}/edit', [DepartemenController::class, 'edit'])->name
 Route::post('/departemen/store', [DepartemenController::class, 'store'])->name('departemen.store');
 Route::put('/departemen/{id}/update', [DepartemenController::class, 'update'])->name('departemen.update');
 Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
+
 
 Route::get('/Opdept', [OperatorDepartemenController::class, 'index'])->name('get.op');
 Route::get('/Opdept/create', [OperatorDepartemenController::class, 'create'])->name('create.op');
