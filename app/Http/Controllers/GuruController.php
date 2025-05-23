@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\guru;
 use App\Models\User;
+use App\Exports\GuruExport;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\PhpWord;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\IOFactory;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class GuruController extends Controller
 {
-     public function index()
+    public function index()
     {
 
         if (request()->ajax()) {
             $guru = guru::with(['user'])->latest()->get();
-      
+
             return DataTables::of($guru)
                 ->addIndexColumn()
                 ->addcolumn('username', function ($guru) {
@@ -25,7 +30,7 @@ class GuruController extends Controller
                     return $guru->user->email;
                 })
                 ->addcolumn('button', function ($guru) {
-                  return '
+                    return '
         <div class="flex justify-center space-x-2">
         <button title="Edit" onclick="window.location=\'' . url('/guru/edit/' . $guru->ID_Guru . '/' . $guru->user->username) . '\'">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="#57B4BA" class="w-5 h-5">
@@ -39,15 +44,52 @@ class GuruController extends Controller
         </button>
     </div>
 ';
-
-
                 })
 
 
-                ->rawcolumns(['username','usernames','button'])
+                ->rawcolumns(['username', 'usernames', 'button'])
                 ->make();
         }
         return view('Panel.users.guru.guru');
+    }
+    public function exportexcel()
+    {
+        return Excel::download(new GuruExport, 'Data_Guru.xlsx');
+    }
+    public function exportpdf()
+    {
+
+        $guru = guru::all();
+
+        $pdf = Pdf::loadView('export.guru.pdf', ['guru' => $guru]);
+
+        return $pdf->download('Data_Users.pdf');
+    }
+
+    public function exportword()
+    {
+        $guru = Guru::with('user')->get();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+
+        $section->addText('Daftar Guru', ['bold' => true, 'size' => 16]);
+        $section->addTextBreak();
+
+        foreach ($guru as $g) {
+            $section->addText("NIP: {$g->ID_Guru}");
+            $section->addText("Nama: {$g->Nama_Guru}");
+            $section->addText("Email: {$g->user->email}");
+            $section->addTextBreak();
+        }
+
+        $filename = 'data_guru.docx';
+        $path = storage_path("app/public/{$filename}");
+
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($path);
+
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 
     /**

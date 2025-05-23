@@ -7,15 +7,24 @@
                 <h2 class="text-xl font-semibold text-gray-700">Guru</h2>
             </div>
 
-            <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
-                onclick="window.location='{{ route('create.guru') }}'">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Tambah Guru
-            </button>
+            <div class="flex gap-3">
+                <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
+                    onclick="window.location='{{ route('create.guru') }}'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Tambah Guru
+                </button>
+                
+                <button id="exportImportBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Export/Import
+                </button>
+            </div>
         </div>
 
         <!-- Search and Filter Section -->
@@ -24,7 +33,7 @@
             <!-- Search Box -->
             <div class="flex items-center">
                 <div class="relative">
-                    <input type="text" id="customSearch" placeholder="Cari broadcast..."
+                    <input type="text" id="customSearch" placeholder="Cari guru..."
                         class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <div class="absolute left-3 top-2.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
@@ -34,7 +43,6 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-
                 </div>
                 <div class="p-3">
                     <label for="entryLength" class="mr-2 text-sm text-gray-600">Tampilkan</label>
@@ -50,9 +58,6 @@
                     </select>
                 </div>
             </div>
-
-
-
         </div>
 
         <!-- Broadcast Table Section -->
@@ -85,6 +90,8 @@
         </div>
     </div>
 
+    @include('Panel.users.guru.modalExportImport')
+
     <script>
         $(document).ready(function() {
             // Initialize DataTable
@@ -94,44 +101,22 @@
                 serverSide: true,
                 ajax: {
                     url: '{{ url()->current() }}',
-                    data: function(d) {
-
-                    }
+                    data: function(d) {}
                 },
-                columns: [{
-                        data: 'ID_Guru',
-                        name: 'ID_Guru',
-                    },
-                    {
-                        data: 'Nama_Guru',
-                        name: 'Nama_Guru'
-                    },
-                    {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                
-                    {
-                        data: 'button',
-                        name: 'button',
-                        orderable: false,
-                        searchable: false
-                    }
+                columns: [
+                    { data: 'ID_Guru', name: 'ID_Guru', searchable: false },
+                    { data: 'Nama_Guru', name: 'Nama_Guru' },
+                    { data: 'username', name: 'username' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'button', name: 'button', orderable: false, searchable: false }
                 ],
-    
                 dom: 'rtip',
                 language: {
                     processing: "Memproses...",
-                    lengthMenu: "Tampilkan _MENU_ entri",
                     zeroRecords: "Tidak ada data yang ditemukan",
                     info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
                     infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
                     infoFiltered: "(disaring dari _MAX_ total entri)",
-                    search: "Cari:",
                     paginate: {
                         first: "Pertama",
                         last: "Terakhir",
@@ -139,32 +124,19 @@
                         previous: "Sebelumnya"
                     }
                 },
-                pageLength: 10,
-                // Custom styling for pagination
-                drawCallback: function() {
-                    // Style the pagination to match your design
-                    $('.dataTables_paginate .paginate_button').addClass(
-                        'relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50'
-                    );
-                    $('.dataTables_paginate .paginate_button.current').addClass(
-                        'z-10 bg-teal-50 border-teal-500 text-teal-600').removeClass(
-                        'text-gray-500');
-                    $('.dataTables_info').addClass('text-sm text-gray-700');
-                }
+                pageLength: 10
             });
+            
             $('#entryLength').on('change', function() {
                 table.page.len($(this).val()).draw();
             });
-            // Custom search functionality
+            
             $('#customSearch').on('keyup', function() {
                 table.search(this.value).draw();
             });
-            // Style the DataTable elements to match your design
-            $('.dataTables_wrapper').addClass('bg-white');
-            $('.dataTables_info').addClass('px-4 py-3 text-sm text-gray-700');
-            $('.dataTables_paginate').addClass(
-                'px-4 py-3 flex items-center justify-between border-t border-gray-200');
         });
+
+       
     </script>
 
 @endsection
