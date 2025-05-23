@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\informasi;
-use Illuminate\Http\Request;
-use App\Http\Requests\InformasiRequest;
 use App\Models\departemen;
+use Illuminate\Http\Request;
+use PhpOffice\PhpWord\PhpWord;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\InformasiExport;
+use PhpOffice\PhpWord\IOFactory;
 use App\Models\kategoriinformasi;
 use App\Models\operatordepartemen;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\InformasiRequest;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -64,6 +69,65 @@ class InformasiController extends Controller
     public function indexAPI()
     {
         return response()->json(Informasi::latest()->get());
+    }
+    public function exportexcel()
+    {
+        return Excel::download(new informasiExport, 'Data_Informasi.xlsx');
+    }
+    public function exportpdf()
+    {
+
+        $informasi = informasi::all();
+
+        $pdf = Pdf::loadView('export.informasi.pdf', ['informasi' => $informasi]);
+
+        return $pdf->download('Data_informasi.pdf');
+    }
+
+    public function exportword()
+    {
+       $informasi = informasi::with(['kategori', 'operator'])->get();
+
+    $phpWord = new PhpWord();
+    $section = $phpWord->addSection();
+
+    $section->addText('Daftar Informasi Broadcast', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+    $section->addTextBreak();
+
+
+    $table = $section->addTable([
+        'borderSize' => 6,
+        'borderColor' => '999999',
+        'cellMargin' => 50
+    ]);
+
+    
+    $table->addRow();
+    $table->addCell()->addText('ID Informasi');
+    $table->addCell()->addText('Judul');
+    $table->addCell()->addText('Kategori');
+    $table->addCell()->addText('Tanggal Mulai');
+    $table->addCell()->addText('Tanggal Selesai');
+    $table->addCell()->addText('Departemen');
+
+    
+    foreach ($informasi as $item) {
+        $table->addRow();
+        $table->addCell()->addText($item->IDInformasi);
+        $table->addCell()->addText($item->Judul);
+        $table->addCell()->addText($item->kategori->NamaKategori);
+        $table->addCell()->addText($item->TanggalMulai);
+        $table->addCell()->addText($item->TanggalSelesai);
+        $table->addCell()->addText($item->operator->NamaOperatorDepartemen);
+    }
+
+    $filename = 'informasi.docx';
+    $path = storage_path("app/public/{$filename}");
+
+    $writer = IOFactory::createWriter($phpWord, 'Word2007');
+    $writer->save($path);
+
+    return response()->download($path)->deleteFileAfterSend(true);
     }
 
     public function create()

@@ -47,6 +47,9 @@ Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
 Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
 Route::get('informasi/data', [InformasiController::class, 'getData'])->name('informasi.data');
 Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
+Route::get('/informasi/export/excel', [informasiController::class, 'exportexcel'])->name('export.excel.informasi');
+Route::get('/informasi/export/pdf', [informasiController::class, 'exportpdf'])->name('export.pdf.informasi');
+Route::get('/informasi/export/word', [informasiController::class, 'exportword'])->name('export.word.informasi');
 
 
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
