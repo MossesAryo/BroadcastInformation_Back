@@ -21,6 +21,9 @@ class GuruController extends Controller
                 ->addcolumn('username', function ($guru) {
                     return $guru->user->username;
                 })
+                ->addcolumn('usernames', function ($guru) {
+                    return $guru->user->email;
+                })
                 ->addcolumn('button', function ($guru) {
                   return '
         <div class="flex justify-center space-x-2">
@@ -41,7 +44,7 @@ class GuruController extends Controller
                 })
 
 
-                ->rawcolumns(['username','button'])
+                ->rawcolumns(['username','usernames','button'])
                 ->make();
         }
         return view('Panel.users.guru.guru');

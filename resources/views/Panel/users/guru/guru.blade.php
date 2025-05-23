@@ -101,7 +101,6 @@
                 columns: [{
                         data: 'ID_Guru',
                         name: 'ID_Guru',
-                        searchable: false
                     },
                     {
                         data: 'Nama_Guru',
