@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Auth\AuthController;
 use League\Uri\UriTemplate\Operator;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
@@ -91,3 +91,6 @@ Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name
 Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
 Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
 
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/login/submit', [AuthController::class, 'submit'])->name('login.submit');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
