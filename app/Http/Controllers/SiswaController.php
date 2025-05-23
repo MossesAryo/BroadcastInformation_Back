@@ -7,6 +7,13 @@ use App\Models\siswa;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+
+
+use App\Exports\SiswaExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
 
 class SiswaController extends Controller
 {
@@ -74,6 +81,45 @@ class SiswaController extends Controller
         ]);
     }
 
+
+        public function exportexcel()
+    {
+        return Excel::download(new SiswaExport, 'Data_Siswa.xlsx');
+    }
+    public function exportpdf()
+    {
+        $siswa = siswa::all();
+
+        $pdf = Pdf::loadView('export.siswa.pdf', ['siswa' => $siswa]);
+
+        return $pdf->download('Data_Siswa.pdf');
+    }
+
+    public function exportword()
+    {
+        $siswa = Siswa::with('user')->get();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+
+        $section->addText('Daftar Siswa', ['bold' => true, 'size' => 16]);
+        $section->addTextBreak();
+
+        foreach ($siswa as $g) {
+            $section->addText("NIP: {$g->ID_Siswa}");
+            $section->addText("Nama: {$g->Nama_Siswa}");
+            $section->addText("Email: {$g->user->email}");
+            $section->addTextBreak();
+        }
+
+        $filename = 'data_Siswa.docx';
+        $path = storage_path("app/public/{$filename}");
+
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($path);
+
+        return response()->download($path)->deleteFileAfterSend(true);
+    }
 
     /**
      * Show the form for creating a new resource.
