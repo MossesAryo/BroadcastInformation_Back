@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\departemen;
 use App\Models\User;
+use App\Models\departemen;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\PhpWord;
+use App\Exports\OperatorExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\IOFactory;
+use App\Exports\DepartemenExport;
 use App\Models\operatordepartemen;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OperatorDepartemenController extends Controller
 {
@@ -16,6 +22,70 @@ class OperatorDepartemenController extends Controller
             'operatordepartemen' => operatordepartemen::get()
         ]);
     }
+
+    public function exportexcel()
+    {
+        return Excel::download(new OperatorExport, 'Data_Operator.xlsx');
+    }
+    public function exportpdf()
+    {
+
+        $opdepartemen = operatordepartemen::all();
+
+        $pdf = Pdf::loadView('export.operator.pdf', ['operator' => $opdepartemen]);
+
+        return $pdf->download('Data_Operator.pdf');
+    }
+
+    public function exportword()
+    {
+    $operator = OperatorDepartemen::with(['departemen', 'user'])->get();
+
+    $phpWord = new PhpWord();
+    $section = $phpWord->addSection();
+
+    // Judul
+    $section->addText('Daftar Informasi Operator Departemen', [
+        'bold' => true,
+        'size' => 16
+    ], ['alignment' => 'center']);
+
+    $section->addTextBreak();
+
+    // Tabel
+    $table = $section->addTable([
+        'borderSize' => 6,
+        'borderColor' => '666666',
+        'cellMargin' => 50
+    ]);
+
+    // Header
+    $table->addRow();
+    $table->addCell(1000)->addText('ID');
+    $table->addCell(3000)->addText('Departemen');
+    $table->addCell(3000)->addText('Nama Operator');
+    $table->addCell(4000)->addText('Email');
+    $table->addCell(3000)->addText('Dibuat Tanggal');
+
+    // Data
+    foreach ($operator as $item) {
+        $table->addRow();
+        $table->addCell()->addText($item->IDOperator);
+        $table->addCell()->addText($item->departemen->Nama_Departemen ?? '-');
+        $table->addCell()->addText($item->NamaOperatorDepartemen);
+        $table->addCell()->addText($item->user->email ?? '-');
+        $table->addCell()->addText($item->created_at ? $item->created_at->format('d-m-Y') : '-');
+    }
+
+    $filename = 'data_operator.docx';
+    $path = storage_path("app/public/{$filename}");
+
+    $writer = IOFactory::createWriter($phpWord, 'Word2007');
+    $writer->save($path);
+
+    return response()->download($path)->deleteFileAfterSend(true);
+    }
+
     public function create()
     {
         return view('panel.users.operator.create', [

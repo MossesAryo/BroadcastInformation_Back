@@ -7,10 +7,28 @@
                     <h2 class="text-2xl font-bold text-gray-800">Departemen</h2>
                     <p class="text-sm text-gray-500">Kelola data departemen</p>
                 </div>
-                <button onclick="window.location='{{ route('departemen.create') }}'"
-                    class="bg-[#57B4BA] hover:bg-[#4aa1a6] text-white px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-                    Tambah Departemen
-                </button>
+                <div class="flex gap-3">
+                    <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
+                        onclick="window.location='{{ route('departemen.create') }}'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Tambah Departemen
+                    </button>
+
+                    <button id="exportImportBtn"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Export/Import
+                    </button>
+                </div>
             </div>
 
             <div class="overflow-x-auto rounded-lg">
@@ -19,7 +37,6 @@
                         <tr>
                             <th class="px-6 py-3 text-left">ID</th>
                             <th class="px-6 py-3 text-left">Nama</th>
-                            <th class="px-6 py-3 text-left">Email</th>
                             <th class="px-6 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -28,7 +45,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4">{{ $item->ID_Departemen }}</td>
                                 <td class="px-6 py-4 font-medium">{{ $item->Nama_Departemen }}
-                                <td class="px-6 py-4 font-medium">{{ $item->Email_Departemen }}
+                                
                                 <td class="px-6 py-4 text-center space-x-2">
                                     <a href="{{ route('departemen.edit', $item->ID_Departemen) }}"
                                         class="text-[#57B4BA] hover:underline">Edit</a>
@@ -42,4 +59,5 @@
             </div>
         </div>
     </div>
+    @include('panel.users.departemen.modalExportImport')
 @endsection

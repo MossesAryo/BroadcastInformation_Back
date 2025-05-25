@@ -76,6 +76,9 @@ Route::get('/departemen/{id}/edit', [DepartemenController::class, 'edit'])->name
 Route::post('/departemen/store', [DepartemenController::class, 'store'])->name('departemen.store');
 Route::put('/departemen/{id}/update', [DepartemenController::class, 'update'])->name('departemen.update');
 Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
+Route::get('/departemen/export/excel', [departemenController::class, 'exportexcel'])->name('export.excel.departemen');
+Route::get('/departemen/export/pdf', [departemenController::class, 'exportpdf'])->name('export.pdf.departemen');
+Route::get('/departemen/export/word', [departemenController::class, 'exportword'])->name('export.word.departemen');
 
 
 Route::get('/Opdept', [OperatorDepartemenController::class, 'index'])->name('get.op');
@@ -84,6 +87,10 @@ Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->na
 Route::get('/Opdept/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit.op');
 Route::put('/Opdept/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update.op');
 Route::get('/Opdept/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy.op');
+Route::get('/Opdept/export/excel', [OperatorDepartemenController::class, 'exportexcel'])->name('export.excel.op');
+Route::get('/Opdept/export/pdf', [OperatorDepartemenController::class, 'exportpdf'])->name('export.pdf.op');
+Route::get('/Opdept/export/word', [OperatorDepartemenController::class, 'exportword'])->name('export.word.op');
+
 
 Route::get('/guru', [GuruController::class, 'index'])->name('get.guru');
 Route::get('/guru/create', [GuruController::class, 'create'])->name('create.guru');
