@@ -68,6 +68,7 @@ Route::delete('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy
 Route::get('/siswa/export/excel', [SiswaController::class, 'exportexcel'])->name('export.excel.siswa');
 Route::get('/siswa/export/pdf', [SiswaController::class, 'exportpdf'])->name('export.pdf.siswa');
 Route::get('/siswa/export/word', [SiswaController::class, 'exportword'])->name('export.word.siswa');
+Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
 
 
 Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
@@ -101,6 +102,7 @@ Route::get('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->
 Route::get('/guru/export/excel', [GuruController::class, 'exportexcel'])->name('export.excel.guru');
 Route::get('/guru/export/pdf', [GuruController::class, 'exportpdf'])->name('export.pdf.guru');
 Route::get('/guru/export/word', [GuruController::class, 'exportword'])->name('export.word.guru');
+Route::post('/guru/import', [GuruController::class, 'import'])->name('guru.import');
 
 Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
 Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
