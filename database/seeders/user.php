@@ -60,6 +60,7 @@ class user extends Seeder
                 'email' => $username . '@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
+                'role' => 1 ,
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),

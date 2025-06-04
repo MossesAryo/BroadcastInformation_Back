@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome back - Flowbite</title>
+    <title>Welcome - Eduinform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js" defer></script>
     <style>
@@ -57,11 +57,12 @@
 
 
                 <!-- Email/Password Form -->
-                <form class="space-y-6" method="get" action="{{ route('login.submit') }}">
+                <form class="space-y-6" method="post" action="{{ route('login.submit') }}">
                     @csrf
+                    @method('POST')
                     <div>
-                        <label for="NIP" class="block text-sm font-medium text-gray-700 mb-2">NIP</label>
-                        <input type="text" id="NIP" placeholder="Masukan NIP" name="login"
+                        <label for="NIP" class="block text-sm font-medium text-gray-700 mb-2">NIP/NIS</label>
+                        <input type="text" id="NIP" placeholder="Masukan NIP/NIS" name="login"
                             class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom transition-colors duration-200"
                             required>
                     </div>
@@ -70,7 +71,7 @@
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                         <div class="relative">
                             <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password"
-                                placeholder="••••••••" name='password'
+                                placeholder="johndoe123" name='password'
                                 class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom transition-colors duration-200"
                                 required>
                             <button type="button" @click="showPassword = !showPassword"

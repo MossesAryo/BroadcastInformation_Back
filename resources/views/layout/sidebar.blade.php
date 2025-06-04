@@ -25,6 +25,13 @@
             <i :class="activeItem === '/informasi' ? 'text-white' : 'text-gray-400'" class="fas fa-file-invoice mr-3"></i>
             Informasi
         </a>
+        <a href="{{ url('/informasi/op') }}"
+           @click="activeItem = '/informasi/op'"
+           :class="activeItem === '/informasi/op' ? 'bg-theme text-white' : 'text-gray-600 hover:bg-theme-light hover:text-theme'"
+           class="group flex items-center px-2 py-2 text-base font-medium rounded-md">
+            <i :class="activeItem === '/informasi/op' ? 'text-white' : 'text-gray-400'" class="fas fa-file-invoice mr-3"></i>
+            Informasi Op
+        </a>
         <a href="{{ url('/kategori') }}"
            @click="activeItem = '/kategori'"
            :class="activeItem === '/kategori' ? 'bg-theme text-white' : 'text-gray-600 hover:bg-theme-light hover:text-theme'"
