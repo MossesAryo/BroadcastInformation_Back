@@ -102,11 +102,17 @@ Route::middleware('auth')->group(function(){
     Route::get('/guru/export/excel', [GuruController::class, 'exportexcel'])->name('export.excel.guru');
     Route::get('/guru/export/pdf', [GuruController::class, 'exportpdf'])->name('export.pdf.guru');
     Route::get('/guru/export/word', [GuruController::class, 'exportword'])->name('export.word.guru');
+    Route::post('/guru/import', [GuruController::class, 'import'])->name('guru.import');
     
     Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
     Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
     Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
     Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
 });
+
+
+
+
+
 
 

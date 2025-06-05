@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 
 use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -120,6 +121,18 @@ class SiswaController extends Controller
 
         return response()->download($path)->deleteFileAfterSend(true);
     }
+
+public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+    ]);
+
+    Excel::import(new SiswaImport, $request->file('file'));
+
+    return redirect()->back()->with('success', 'Data siswa berhasil diimport!');
+}
+
 
     /**
      * Show the form for creating a new resource.

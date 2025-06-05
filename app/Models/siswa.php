@@ -10,7 +10,7 @@ class siswa extends Model
     protected $primaryKey = 'ID_Siswa';
     public $timestamps = true;
 
-    protected $fillable = ['Nama_Siswa', 'username'];
+    protected $fillable = ['ID_Siswa','Nama_Siswa', 'username'];
 
     public function user()
     {
