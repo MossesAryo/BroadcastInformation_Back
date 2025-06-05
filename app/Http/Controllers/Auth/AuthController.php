@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use App\Models\operatordepartemen;
+use App\Models\OperatorDepartemen; // Fixed capitalization
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +11,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    function index()
+    public function index()
     {
         return view('Auth.Login.login');
     }
@@ -39,20 +39,40 @@ class AuthController extends Controller
             return back()->withErrors(['login' => 'ID Operator/Username atau password salah.']);
         }
 
+        // Login dulu
         Auth::login($user);
+        $request->session()->regenerate();
 
+        // Ambil operator ulang berdasarkan username
         $operator = OperatorDepartemen::where('username', $user->username)->first();
-        if ($operator) {
-            session(['operator' => $operator]);
+
+        // dd($operator);
+
+
+        // Pastikan operator ditemukan
+        if (!$operator) {
+            Auth::logout();
+            return back()->withErrors(['login' => 'Operator tidak ditemukan.']);
         }
 
-        return redirect()->intended('/');
+        // Simpan ke session
+        session(['operator' => $operator->toArray()]);
+        
+        if($user -> role == '0'){
+          return redirect()->route('dashboard');
+        }
+        return redirect()->route('get.info.op');
     }
 
 
-    function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect(route('login'));
+
+        // Invalidate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }
