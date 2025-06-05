@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/siswa/export/excel', [SiswaController::class, 'exportexcel'])->name('export.excel.siswa');
     Route::get('/siswa/export/pdf', [SiswaController::class, 'exportpdf'])->name('export.pdf.siswa');
     Route::get('/siswa/export/word', [SiswaController::class, 'exportword'])->name('export.word.siswa');
+    Route::post('/siswa/import', [SiswaController::class, 'import'])->name('guru.import');
     
     
     Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
