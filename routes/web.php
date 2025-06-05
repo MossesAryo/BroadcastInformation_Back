@@ -12,9 +12,9 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
 use App\Http\Controllers\Operator\InformasiOperatorController;
 
-Route::get('/users', function() {
+Route::get('/dashboard', function() {
     return view('Panel.dashboard');
-})->name('biji');
+})->name('dashboard');
 Route::get('/notifikasi', function() {
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
@@ -26,6 +26,9 @@ Route::get('/history', function() {
 Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
 })->name('user');
+Route::get('/users', function() {
+    return view('Panel.users.user');
+})->name('users');
 
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -33,17 +36,18 @@ Route::post('/login/submit', [AuthController::class, 'submit'])->name('login.sub
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function(){ 
-    Route::middleware('UserAccess:0')->group(function(){
-        Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
-    });
+   Route::middleware('UserAccess:1,2,3')->group(function(){
+    Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
+});
 
-    Route::get('/informasi/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
+    Route::get('/dashboard/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
+
     Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
     Route::post('/create', [InformasiController::class, 'store'])->name('post.info');
     Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])->name('destroy.info');
+    Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
     Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
     Route::get('informasi/data', [InformasiController::class, 'getData'])->name('informasi.data');
-    Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
     Route::get('/informasi/export/excel', [informasiController::class, 'exportexcel'])->name('export.excel.informasi');
     Route::get('/informasi/export/pdf', [informasiController::class, 'exportpdf'])->name('export.pdf.informasi');
     Route::get('/informasi/export/word', [informasiController::class, 'exportword'])->name('export.word.informasi');

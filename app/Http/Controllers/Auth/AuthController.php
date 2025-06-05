@@ -57,8 +57,11 @@ class AuthController extends Controller
 
         // Simpan ke session
         session(['operator' => $operator->toArray()]);
-
-        return redirect()->intended(route('biji'));
+        
+        if($user -> role == '0'){
+          return redirect()->route('dashboard');
+        }
+        return redirect()->route('get.info.op');
     }
 
 

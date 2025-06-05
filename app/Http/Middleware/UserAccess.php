@@ -14,9 +14,9 @@ class UserAccess
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-         if(!Auth::user() || Auth::user()->role != $role){
+       if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
             abort(403);
         }
         return $next($request);
