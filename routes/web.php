@@ -1,56 +1,75 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use League\Uri\UriTemplate\Operator;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GuruController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\DepartemenController;
-use App\Http\Controllers\KalenderController;
 use App\Http\Controllers\OperatorDepartemenController;
+use App\Http\Controllers\KalenderController;
+use Illuminate\Http\Request; // Add this import
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('Panel.dashboard');
 });
 
-Route::get('/users', function() {
+Route::get('/users', function () {
     return view('Panel.users.user');
 });
 
-
-
-Route::get('/notifikasi', function() {
+Route::get('/notifikasi', function () {
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
 
-Route::get('/history', function() {
+Route::get('/history', function () {
     return view('Panel.history.history');
 })->name('history');
 
+Route::get('/history/filter', function (Request $request) {
+    $start_date = $request->input('start_date');
+    $end_date = $request->input('end_date');
+    $activity_type = $request->input('activity_type');
+    $search = $request->input('search');
 
-Route::get('/operator', function() {
+    $activities = session('activity_logs', []);
+
+    if ($start_date && $end_date) {
+        $activities = array_filter($activities, function ($activity) use ($start_date, $end_date) {
+            $created_at = \Carbon\Carbon::parse($activity['created_at']);
+            return $created_at->gte($start_date) && $created_at->lte($end_date);
+        });
+    }
+
+    if ($activity_type) {
+        $activities = array_filter($activities, function ($activity) use ($activity_type) {
+            return $activity['activity_type'] === $activity_type;
+        });
+    }
+
+    if ($search) {
+        $activities = array_filter($activities, function ($activity) use ($search) {
+            return stripos($activity['title'], $search) !== false || stripos($activity['description'], $search) !== false;
+        });
+    }
+
+    session(['activity_logs' => array_values($activities)]);
+    return view('Panel.history.history');
+})->name('history.filter');
+
+Route::get('/operator', function () {
     return view('Panel.users.operator.operator');
 })->name('user');
 
-
-Route::get('/informasi', [InformasiController::class, 'index'])
-->name('get.info');
-
-Route::get('/informasi/create', [InformasiController::class, 'create'])
-->name('create.info');
-Route::post('/create', [InformasiController::class, 'store'])
-->name('post.info');
-Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])
-->name('destroy.info');
+Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
+Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
+Route::post('/create', [InformasiController::class, 'store'])->name('post.info');
+Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])->name('destroy.info');
 Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
-Route::get('informasi/data', [InformasiController::class, 'getData'])->name('informasi.data');
-Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
-Route::get('/informasi/export/excel', [informasiController::class, 'exportexcel'])->name('export.excel.informasi');
-Route::get('/informasi/export/pdf', [informasiController::class, 'exportpdf'])->name('export.pdf.informasi');
-Route::get('/informasi/export/word', [informasiController::class, 'exportword'])->name('export.word.informasi');
-
+Route::get('/informasi/export/excel', [InformasiController::class, 'exportexcel'])->name('export.excel.informasi');
+Route::get('/informasi/export/pdf', [InformasiController::class, 'exportpdf'])->name('export.pdf.informasi');
+Route::get('/informasi/export/word', [InformasiController::class, 'exportword'])->name('export.word.informasi');
 
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
 Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');

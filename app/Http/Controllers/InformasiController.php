@@ -11,6 +11,7 @@ use App\Exports\InformasiExport;
 use PhpOffice\PhpWord\IOFactory;
 use App\Models\kategoriinformasi;
 use App\Models\operatordepartemen;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\InformasiRequest;
 use Illuminate\Support\Facades\Storage;
@@ -18,49 +19,69 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InformasiController extends Controller
 {
+    private function logActivity($type, $title, $description, $status, $color, $badge_color, $icon)
+    {
+        $user = Auth::user();
+        $operator_id = null;
+
+        if ($user) {
+            $operator = OperatorDepartemen::where('username', $user->username)->first();
+            $operator_id = $operator ? $operator->IDOperator : null;
+        }
+
+        $activity = [
+            'created_at' => now()->toDateTimeString(),
+            'activity_type' => $type,
+            'title' => $title,
+            'description' => $description,
+            'status' => $status,
+            'color' => $color,
+            'badge_color' => $badge_color,
+            'icon' => $icon,
+            'operator_id' => $operator_id,
+        ];
+
+        $activities = session('activity_logs', []);
+        $activities[] = $activity;
+        session(['activity_logs' => $activities]);
+    }
+
     public function index()
     {
-
         if (request()->ajax()) {
-            $informasi = informasi::with(['kategori', 'operator'])->latest()->get();
-      
+            $informasi = Informasi::with(['kategori', 'operator'])->latest()->get();
+
             return DataTables::of($informasi)
                 ->addIndexColumn()
-                ->addcolumn('IDKategoriInformasi', function ($informasi) {
+                ->addColumn('IDKategoriInformasi', function ($informasi) {
                     return $informasi->kategori->NamaKategori;
                 })
-                ->addcolumn('IDOperator', function ($informasi) {
+                ->addColumn('IDOperator', function ($informasi) {
                     return $informasi->operator->NamaOperatorDepartemen;
                 })
-                ->addcolumn('button', function ($informasi) {
-                  return '
-    <div class="flex justify-center space-x-2">
-        <button class="text-gray-600 hover:text-gray-900" title="View"
-            onclick="window.location.href=\'' . route('show.info', $informasi->IDInformasi) . '\'">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                <path fill-rule="evenodd"
-                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                    clip-rule="evenodd" />
-            </svg>
-        </button>
-
-        <button class="text-red-600 hover:text-red-900" title="Delete"
-             onclick="openDeleteModal(\'' . $informasi->IDInformasi . '\')">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd" />
-            </svg>
-        </button>
-    </div>
-';
-
-
+                ->addColumn('button', function ($informasi) {
+                    return '
+                    <div class="flex justify-center space-x-2">
+                        <button class="text-gray-600 hover:text-gray-900" title="View"
+                            onclick="window.location.href=\'' . route('show.info', $informasi->IDInformasi) . '\'">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                <path fill-rule="evenodd"
+                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button class="text-red-600 hover:text-red-900" title="Delete"
+                            onclick="openDeleteModal(\'' . $informasi->IDInformasi . '\')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>';
                 })
-
-
-                ->rawcolumns(['IDKategoriInformasi', 'IDOperator', 'button'])
+                ->rawColumns(['IDKategoriInformasi', 'IDOperator', 'button'])
                 ->make();
         }
         return view('Panel.informasi.informasi');
@@ -86,48 +107,48 @@ class InformasiController extends Controller
 
     public function exportword()
     {
-       $informasi = informasi::with(['kategori', 'operator'])->get();
+        $informasi = informasi::with(['kategori', 'operator'])->get();
 
-    $phpWord = new PhpWord();
-    $section = $phpWord->addSection();
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
 
-    $section->addText('Daftar Informasi Broadcast', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-    $section->addTextBreak();
+        $section->addText('Daftar Informasi Broadcast', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+        $section->addTextBreak();
 
 
-    $table = $section->addTable([
-        'borderSize' => 6,
-        'borderColor' => '999999',
-        'cellMargin' => 50
-    ]);
+        $table = $section->addTable([
+            'borderSize' => 6,
+            'borderColor' => '999999',
+            'cellMargin' => 50
+        ]);
 
-    
-    $table->addRow();
-    $table->addCell()->addText('ID Informasi');
-    $table->addCell()->addText('Judul');
-    $table->addCell()->addText('Kategori');
-    $table->addCell()->addText('Tanggal Mulai');
-    $table->addCell()->addText('Tanggal Selesai');
-    $table->addCell()->addText('Departemen');
 
-    
-    foreach ($informasi as $item) {
         $table->addRow();
-        $table->addCell()->addText($item->IDInformasi);
-        $table->addCell()->addText($item->Judul);
-        $table->addCell()->addText($item->kategori->NamaKategori);
-        $table->addCell()->addText($item->TanggalMulai);
-        $table->addCell()->addText($item->TanggalSelesai);
-        $table->addCell()->addText($item->operator->NamaOperatorDepartemen);
-    }
+        $table->addCell()->addText('ID Informasi');
+        $table->addCell()->addText('Judul');
+        $table->addCell()->addText('Kategori');
+        $table->addCell()->addText('Tanggal Mulai');
+        $table->addCell()->addText('Tanggal Selesai');
+        $table->addCell()->addText('Departemen');
 
-    $filename = 'informasi.docx';
-    $path = storage_path("app/public/{$filename}");
 
-    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($path);
+        foreach ($informasi as $item) {
+            $table->addRow();
+            $table->addCell()->addText($item->IDInformasi);
+            $table->addCell()->addText($item->Judul);
+            $table->addCell()->addText($item->kategori->NamaKategori);
+            $table->addCell()->addText($item->TanggalMulai);
+            $table->addCell()->addText($item->TanggalSelesai);
+            $table->addCell()->addText($item->operator->NamaOperatorDepartemen);
+        }
 
-    return response()->download($path)->deleteFileAfterSend(true);
+        $filename = 'informasi.docx';
+        $path = storage_path("app/public/{$filename}");
+
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($path);
+
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 
     public function create()
@@ -143,11 +164,12 @@ class InformasiController extends Controller
     {
         $data = $request->validated();
 
-        $file = $request->file('Thumbnail'); //img
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension(); //jpg,dll
-        $path = Storage::disk('public')->putFileAs('images', $file, $fileName); //public/back/aasdvndavkd.jpg
+        $file = $request->file('Thumbnail');
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+        $path = Storage::disk('public')->putFileAs('images', $file, $fileName);
         $data['Thumbnail'] = $path;
-        Informasi::create([
+
+        $informasi = Informasi::create([
             'IDOperator' => $request->IDOperator,
             'IDKategoriInformasi' => $request->IDKategoriInformasi,
             'TanggalMulai' => $request->TanggalMulai,
@@ -157,9 +179,18 @@ class InformasiController extends Controller
             'Deskripsi' => $request->Deskripsi,
         ]);
 
-        return redirect()->route('get.info')->with('success', 'informasi data has been created');
-    }
+        $this->logActivity(
+            'create',
+            'Created New Information',
+            "You created new information: {$request->Judul}",
+            'Created',
+            'bg-purple-500',
+            'bg-purple-100 text-purple-800',
+            'fas fa-plus'
+        );
 
+        return redirect()->route('get.info')->with('success', 'Information data has been created');
+    }
 
     public function show($id)
     {
@@ -175,11 +206,23 @@ class InformasiController extends Controller
         }
     }
 
-    public function destroy(String $id)
+    public function destroy($id)
     {
-        $data = informasi::find($id);
-        Storage::disk('public')->delete('public/', $data->Thumbnail);
+        $data = Informasi::findOrFail($id);
+        $title = $data->Judul;
+
+        Storage::disk('public')->delete($data->Thumbnail);
         $data->delete();
+
+        $this->logActivity(
+            'delete',
+            'Deleted Information',
+            "You deleted information: {$title}",
+            'Deleted',
+            'bg-red-500',
+            'bg-red-100 text-red-800',
+            'fas fa-times'
+        );
 
         return back()->with('success', 'Information has been deleted');
     }
