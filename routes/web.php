@@ -1,19 +1,14 @@
 <?php
 use League\Uri\UriTemplate\Operator;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\KalenderController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\InformasiController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\GuruController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
 use App\Http\Controllers\KalenderController;
-use Illuminate\Http\Request; // Add this import
+use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Operator\InformasiOperatorController;
 
@@ -71,7 +66,7 @@ Route::get('/history/filter', function (Request $request) {
     return view('Panel.history.history');
 })->name('history.filter');
 
-Route::get('/operator', function () {
+
 Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
 })->name('user');
