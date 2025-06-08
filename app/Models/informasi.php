@@ -37,4 +37,15 @@ class informasi extends Model
         return $this->belongsTo(User::class, 'username');
     }
 
+    public function targetDepartemen()
+    {
+        return $this->belongsToMany(
+        Departemen::class, 
+        'targetdepartemen', 
+        'IDInformasi', 
+        'ID_Departemen'
+    );
+    }
+   
+
 }

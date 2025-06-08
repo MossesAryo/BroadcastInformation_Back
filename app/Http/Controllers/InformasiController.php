@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\User;
+
 use App\Models\informasi;
 use App\Models\departemen;
 use Illuminate\Http\Request;
@@ -11,6 +14,7 @@ use App\Exports\InformasiExport;
 use PhpOffice\PhpWord\IOFactory;
 use App\Models\kategoriinformasi;
 use App\Models\operatordepartemen;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\InformasiRequest;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +27,7 @@ class InformasiController extends Controller
 
         if (request()->ajax()) {
             $informasi = informasi::with(['kategori', 'operator'])->latest()->get();
-      
+
             return DataTables::of($informasi)
                 ->addIndexColumn()
                 ->addcolumn('IDKategoriInformasi', function ($informasi) {
@@ -33,7 +37,7 @@ class InformasiController extends Controller
                     return $informasi->operator->NamaOperatorDepartemen;
                 })
                 ->addcolumn('button', function ($informasi) {
-                  return '
+                    return '
     <div class="flex justify-center space-x-2">
         <button class="text-gray-600 hover:text-gray-900" title="View"
             onclick="window.location.href=\'' . route('show.info', $informasi->IDInformasi) . '\'">
@@ -55,8 +59,6 @@ class InformasiController extends Controller
         </button>
     </div>
 ';
-
-
                 })
 
 
@@ -86,48 +88,48 @@ class InformasiController extends Controller
 
     public function exportword()
     {
-       $informasi = informasi::with(['kategori', 'operator'])->get();
+        $informasi = informasi::with(['kategori', 'operator'])->get();
 
-    $phpWord = new PhpWord();
-    $section = $phpWord->addSection();
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
 
-    $section->addText('Daftar Informasi Broadcast', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-    $section->addTextBreak();
+        $section->addText('Daftar Informasi Broadcast', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+        $section->addTextBreak();
 
 
-    $table = $section->addTable([
-        'borderSize' => 6,
-        'borderColor' => '999999',
-        'cellMargin' => 50
-    ]);
+        $table = $section->addTable([
+            'borderSize' => 6,
+            'borderColor' => '999999',
+            'cellMargin' => 50
+        ]);
 
-    
-    $table->addRow();
-    $table->addCell()->addText('ID Informasi');
-    $table->addCell()->addText('Judul');
-    $table->addCell()->addText('Kategori');
-    $table->addCell()->addText('Tanggal Mulai');
-    $table->addCell()->addText('Tanggal Selesai');
-    $table->addCell()->addText('Departemen');
 
-    
-    foreach ($informasi as $item) {
         $table->addRow();
-        $table->addCell()->addText($item->IDInformasi);
-        $table->addCell()->addText($item->Judul);
-        $table->addCell()->addText($item->kategori->NamaKategori);
-        $table->addCell()->addText($item->TanggalMulai);
-        $table->addCell()->addText($item->TanggalSelesai);
-        $table->addCell()->addText($item->operator->NamaOperatorDepartemen);
-    }
+        $table->addCell()->addText('ID Informasi');
+        $table->addCell()->addText('Judul');
+        $table->addCell()->addText('Kategori');
+        $table->addCell()->addText('Tanggal Mulai');
+        $table->addCell()->addText('Tanggal Selesai');
+        $table->addCell()->addText('Departemen');
 
-    $filename = 'informasi.docx';
-    $path = storage_path("app/public/{$filename}");
 
-    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($path);
+        foreach ($informasi as $item) {
+            $table->addRow();
+            $table->addCell()->addText($item->IDInformasi);
+            $table->addCell()->addText($item->Judul);
+            $table->addCell()->addText($item->kategori->NamaKategori);
+            $table->addCell()->addText($item->TanggalMulai);
+            $table->addCell()->addText($item->TanggalSelesai);
+            $table->addCell()->addText($item->operator->NamaOperatorDepartemen);
+        }
 
-    return response()->download($path)->deleteFileAfterSend(true);
+        $filename = 'informasi.docx';
+        $path = storage_path("app/public/{$filename}");
+
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($path);
+
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 
     public function create()
@@ -142,13 +144,27 @@ class InformasiController extends Controller
     public function store(InformasiRequest $request)
     {
         $data = $request->validated();
+        $user = Auth::user();
+        $operatorId = $user->operator?->IDOperator; 
 
-        $file = $request->file('Thumbnail'); //img
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension(); //jpg,dll
-        $path = Storage::disk('public')->putFileAs('images', $file, $fileName); //public/back/aasdvndavkd.jpg
+        if (!$operatorId) {
+            return redirect()->back()
+                ->with('error', 'You are not registered as an operator. Please contact administrator to register you as an operator.')
+                ->withInput();
+        }
+
+        if (!$operatorId) {
+            return redirect()->back()
+                ->with('error', 'User is not associated with any operator department')
+                ->withInput();
+        }
+        $file = $request->file('Thumbnail');
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+        $path = Storage::disk('public')->putFileAs('images', $file, $fileName);
         $data['Thumbnail'] = $path;
-        Informasi::create([
-            'IDOperator' => $request->IDOperator,
+       
+        $informasi = Informasi::create([
+            'IDOperator' => $operatorId,
             'IDKategoriInformasi' => $request->IDKategoriInformasi,
             'TanggalMulai' => $request->TanggalMulai,
             'TanggalSelesai' => $request->TanggalSelesai,
@@ -157,7 +173,27 @@ class InformasiController extends Controller
             'Deskripsi' => $request->Deskripsi,
         ]);
 
-        return redirect()->route('get.info')->with('success', 'informasi data has been created');
+
+        switch ($request->target_type) {
+            case 'semua':
+
+                break;
+            case 'satu':
+
+                $informasi->targetDepartemen()->attach($request->target_departemen_id);
+                break;
+            case 'beberapa':
+
+                $informasi->targetDepartemen()->attach($request->target_departemen_ids);
+                break;
+        }
+
+        if ($user->operator->IDOperator = 0){
+            return redirect()->route('get.info')->with('success', 'Informasi data has been created');
+        }
+        else{
+            return redirect()->route('get.info.op')->with('success', 'Informasi data has been created');
+        }
     }
 
 
@@ -178,9 +214,14 @@ class InformasiController extends Controller
     public function destroy(String $id)
     {
         $data = informasi::find($id);
-        Storage::disk('public')->delete('public/', $data->Thumbnail);
-        $data->delete();
 
-        return back()->with('success', 'Information has been deleted');
+        if ($data) {
+            Storage::disk('public')->delete($data->Thumbnail);
+            $data->delete();
+
+            return back()->with('success', 'Information has been deleted');
+        }
+
+        return back()->with('error', 'Information not found');
     }
 }

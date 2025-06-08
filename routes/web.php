@@ -41,7 +41,6 @@ Route::middleware('auth')->group(function(){
 });
 
     Route::get('/dashboard/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
-
     Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
     Route::post('/create', [InformasiController::class, 'store'])->name('post.info');
     Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])->name('destroy.info');
