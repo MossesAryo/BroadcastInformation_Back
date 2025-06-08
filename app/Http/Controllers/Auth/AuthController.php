@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\OperatorDepartemen; // Fixed capitalization
+
 
 class AuthController extends Controller
 {
@@ -245,9 +245,9 @@ class AuthController extends Controller
         );
 
         return redirect()->intended('/');
-    }
+    
 
-
+    
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
