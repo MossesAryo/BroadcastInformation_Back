@@ -14,6 +14,7 @@ class InformasiOperatorController extends Controller
     $user = Auth::user();
     $operator = $user->operator;
     
+    
     if (!$operator) {
         return redirect()->back()->with('error', 'You are not registered as an operator.');
     }
@@ -34,6 +35,8 @@ class InformasiOperatorController extends Controller
         })
         ->orderBy('TanggalMulai', 'desc')
         ->get();
+
+
     
     return view('paneloperator.informasi', compact('informasi'));
 }
