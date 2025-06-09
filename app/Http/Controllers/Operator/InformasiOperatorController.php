@@ -12,46 +12,30 @@ class InformasiOperatorController extends Controller
   public function index()
 {
     $user = Auth::user();
-    $userDepartemenId = $user->ID_Departemen; 
+    $operator = $user->operator;
+    
+    if (!$operator) {
+        return redirect()->back()->with('error', 'You are not registered as an operator.');
+    }
+    
+    // Get the operator's department ID
+    $operatorDepartmentId = $operator->ID_Departemen;
+    
+    // Query to get information visible to this operator
     $informasi = Informasi::with(['kategori', 'operator', 'targetDepartemen'])
-        ->where(function($query) use ($userDepartemenId) {
-            $query->whereHas('targetDepartemen', function($q) use ($userDepartemenId) {
-                $q->where('targetdepartemen.ID_Departemen', $userDepartemenId); 
-            })
-            ->orWhereDoesntHave('targetDepartemen');
+        ->where(function($query) use ($operatorDepartmentId) {
+            // Information with no specific target (visible to all)
+            $query->whereDoesntHave('targetDepartemen')
+                  // OR information specifically targeted to this operator's department
+                  ->orWhereHas('targetDepartemen', function($subQuery) use ($operatorDepartmentId) {
+                      // Specify the table name to avoid ambiguous column error
+                      $subQuery->where('targetdepartemen.ID_Departemen', $operatorDepartmentId);
+                  });
         })
         ->orderBy('TanggalMulai', 'desc')
         ->get();
-    return view('PanelOperator.Informasi', compact('informasi'));
+    
+    return view('paneloperator.informasi', compact('informasi'));
 }
-public function indexWithTargets()
-{
-    $user = Auth::user();
-    $userDepartemenId = $user->ID_Departemen;
-    $informasi = Informasi::with(['kategori', 'operator', 'targetDepartemen'])
-        ->whereHas('targetDepartemen', function($query) use ($userDepartemenId) {
-            $query->where('targetdepartemen.ID_Departemen', $userDepartemenId);
-        })
-        ->orderBy('TanggalMulai', 'desc')
-        ->get();
-    
-    return view('PanelOperator.Informasi', compact('informasi'));
-}
-public function indexWithHighlight()
-{
-    $user = Auth::user();
-    $userDepartemenId = $user->ID_Departemen;
-    
-    $informasi = Informasi::with(['kategori', 'operator', 'targetDepartemen'])
-        ->orderBy('TanggalMulai', 'desc')
-        ->get();
-    
-    
-    $informasi->each(function($item) use ($userDepartemenId) {
-        $item->targets_user_dept = $item->targetDepartemen->pluck('ID_Departemen')->contains($userDepartemenId) 
-            || $item->targetDepartemen->isEmpty();
-    });
-    
-    return view('PanelOperator.Informasi', compact('informasi'));
-}
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\targetdepartemen;
 use Illuminate\Database\Eloquent\Model;
 
 class informasi extends Model
@@ -40,7 +41,7 @@ class informasi extends Model
     public function targetDepartemen()
     {
         return $this->belongsToMany(
-        Departemen::class, 
+    departemen::class, 
         'targetdepartemen', 
         'IDInformasi', 
         'ID_Departemen'

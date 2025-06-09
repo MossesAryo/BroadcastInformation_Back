@@ -137,7 +137,7 @@ class InformasiController extends Controller
         return view('Panel.informasi.createinformasi', [
             'informasi' => informasi::latest()->get(),
             'kategori' => kategoriinformasi::get(),
-            'departemens' => operatordepartemen::get()
+            'departemen' => departemen::get()
         ]);
     }
 

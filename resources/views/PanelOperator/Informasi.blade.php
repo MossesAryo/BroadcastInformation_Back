@@ -104,8 +104,9 @@
                                         </svg>
                                         Target:
                                         @foreach ($item->targetDepartemen->take(2) as $dept)
-                                            <span
-                                                class="bg-green-100 text-green-800 px-2 py-1 rounded-full ml-1">{{ $dept->nama ?? $dept->NamaDepartemen }}</span>
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full ml-1">
+                                                {{ $dept->Nama_Departemen }}
+                                            </span>
                                         @endforeach
                                         @if ($item->targetDepartemen->count() > 2)
                                             <span class="text-gray-400 ml-1">+{{ $item->targetDepartemen->count() - 2 }}

@@ -16,5 +16,15 @@ class departemen extends Model
     {
         return $this->hasMany(OperatorDepartemen::class, 'ID_Departemen');
     }
+    public function targetInformasi()
+    {
+        return $this->belongsToMany(
+            Informasi::class, 
+            'IDTargetDepartemen', 
+            'ID_Departemen', 
+            'IDInformasi'
+        );
+    }
+    
 
 }

@@ -136,11 +136,10 @@
                                 class="mt-3 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
                                 disabled>
                                 <option value="">Pilih Departemen</option>
-                                <option value="1">Teknologi Informasi</option>
-                                <option value="2">Akuntansi</option>
-                                <option value="3">Manajemen</option>
-                                <option value="4">Teknik</option>
-                                <option value="5">Bahasa</option>
+                                @foreach ($departemen as $item)
+                                <option value="{{ $item->ID_Departemen }}">{{ $item->Nama_Departemen }}</option>
+                                @endforeach
+                               
                             </select>
                         </div>
                     </label>
@@ -157,31 +156,13 @@
                             </div>
                             <p class="text-sm text-gray-600 mt-1">Pilih beberapa departemen sekaligus</p>
                             <div class="mt-3 grid grid-cols-2 gap-2">
+                                @foreach ($departemen as $item)
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="target_departemen_ids[]" value="1" disabled
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
-                                    <span class="text-sm text-gray-700">Teknologi Informasi</span>
+                                    <input type="checkbox" name="target_departemen_ids[]" value="{{ $item->ID_Departemen }}" disabled
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
+                                    <span class="text-sm text-gray-700">{{ $item->Nama_Departemen }}</span>
                                 </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="target_departemen_ids[]" value="2" disabled
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
-                                    <span class="text-sm text-gray-700">Akuntansi</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="target_departemen_ids[]" value="3" disabled
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
-                                    <span class="text-sm text-gray-700">Manajemen</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="target_departemen_ids[]" value="4" disabled
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
-                                    <span class="text-sm text-gray-700">Teknik</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" name="target_departemen_ids[]" value="5" disabled
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50">
-                                    <span class="text-sm text-gray-700">Bahasa</span>
-                                </label>
+                                @endforeach
                             </div>
                         </div>
                     </label>
