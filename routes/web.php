@@ -1,27 +1,71 @@
 <?php
-
 use League\Uri\UriTemplate\Operator;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\KalenderController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
+use App\Http\Controllers\KalenderController;
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Operator\InformasiOperatorController;
+
 
 Route::get('/dashboard', function() {
     return view('Panel.dashboard');
+
+});
+
+Route::get('/users', function () {
+    return view('Panel.users.user');
+});
+
+Route::get('/notifikasi', function () {
+
 })->name('dashboard');
 Route::get('/notifikasi', function() {
+
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
 
-Route::get('/history', function() {
+Route::get('/history', function () {
     return view('Panel.history.history');
 })->name('history');
+
+
+Route::get('/history/filter', function (Request $request) {
+    $start_date = $request->input('start_date');
+    $end_date = $request->input('end_date');
+    $activity_type = $request->input('activity_type');
+    $search = $request->input('search');
+
+    $activities = session('activity_logs', []);
+
+    if ($start_date && $end_date) {
+        $activities = array_filter($activities, function ($activity) use ($start_date, $end_date) {
+            $created_at = \Carbon\Carbon::parse($activity['created_at']);
+            return $created_at->gte($start_date) && $created_at->lte($end_date);
+        });
+    }
+
+    if ($activity_type) {
+        $activities = array_filter($activities, function ($activity) use ($activity_type) {
+            return $activity['activity_type'] === $activity_type;
+        });
+    }
+
+    if ($search) {
+        $activities = array_filter($activities, function ($activity) use ($search) {
+            return stripos($activity['title'], $search) !== false || stripos($activity['description'], $search) !== false;
+        });
+    }
+
+    session(['activity_logs' => array_values($activities)]);
+    return view('Panel.history.history');
+})->name('history.filter');
+
 
 Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
@@ -31,8 +75,10 @@ Route::get('/users', function() {
 })->name('users');
 
 
+
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('/login/submit', [AuthController::class, 'submit'])->name('login.submit');
+
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function(){ 
@@ -109,10 +155,3 @@ Route::middleware('auth')->group(function(){
     Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
     Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
 });
-
-
-
-
-
-
-
