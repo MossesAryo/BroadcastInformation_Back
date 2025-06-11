@@ -49,4 +49,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function operator()
+    {
+        return $this->hasOne(OperatorDepartemen::class, 'username', 'username');
+    }
+
+    public function getOperatorId()
+    {
+        return $this->operator ? $this->operator->IDOperator : null;
+    }
 }

@@ -22,14 +22,16 @@ class InformasiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'IDOperator' => 'required',
             'IDKategoriInformasi' => 'required',
             'TanggalMulai' => 'required',
             'TanggalSelesai' => 'required',
             'Thumbnail' => 'nullable|image|file|mimes:png,jpg,webp|max:2024',
             'Judul' => 'required',
             'Deskripsi' => 'required',
-            'TargetDepartemen' => 'nullable',
+            'target_type' => 'required|in:semua,satu,beberapa',
+            'target_departemen_id' => 'required_if:target_type,satu',
+            'target_departemen_ids' => 'required_if:target_type,beberapa|array|min:1',
+            
         ];
     }
 }

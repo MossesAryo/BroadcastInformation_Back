@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\User;
+
 use App\Models\informasi;
 use App\Models\departemen;
 use Illuminate\Http\Request;
@@ -49,8 +52,7 @@ class InformasiController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $informasi = Informasi::with(['kategori', 'operator'])->latest()->get();
-
+            $informasi = informasi::with(['kategori', 'operator'])->latest()->get();
             return DataTables::of($informasi)
                 ->addIndexColumn()
                 ->addColumn('IDKategoriInformasi', function ($informasi) {
@@ -156,21 +158,33 @@ class InformasiController extends Controller
         return view('Panel.informasi.createinformasi', [
             'informasi' => informasi::latest()->get(),
             'kategori' => kategoriinformasi::get(),
-            'departemens' => operatordepartemen::get()
+            'departemen' => departemen::get()
         ]);
     }
 
     public function store(InformasiRequest $request)
     {
         $data = $request->validated();
+        $user = Auth::user();
+        $operatorId = $user->operator?->IDOperator; 
+        if (!$operatorId) {
+            return redirect()->back()
+                ->with('error', 'You are not registered as an operator. Please contact administrator to register you as an operator.')
+                ->withInput();
+        }
+
+        if (!$operatorId) {
+            return redirect()->back()
+                ->with('error', 'User is not associated with any operator department')
+                ->withInput();
+        }
 
         $file = $request->file('Thumbnail');
         $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
         $path = Storage::disk('public')->putFileAs('images', $file, $fileName);
         $data['Thumbnail'] = $path;
-
         $informasi = Informasi::create([
-            'IDOperator' => $request->IDOperator,
+            'IDOperator' => $operatorId,
             'IDKategoriInformasi' => $request->IDKategoriInformasi,
             'TanggalMulai' => $request->TanggalMulai,
             'TanggalSelesai' => $request->TanggalSelesai,
@@ -178,8 +192,20 @@ class InformasiController extends Controller
             'Judul' => $request->Judul,
             'Deskripsi' => $request->Deskripsi,
         ]);
+        switch ($request->target_type) {
+            case 'semua':
 
-        $this->logActivity(
+                break;
+            case 'satu':
+
+                $informasi->targetDepartemen()->attach($request->target_departemen_id);
+                break;
+            case 'beberapa':
+
+                $informasi->targetDepartemen()->attach($request->target_departemen_ids);
+                break;
+        }
+         $this->logActivity(
             'create',
             'Created New Information',
             "You created new information: {$request->Judul}",
@@ -188,8 +214,12 @@ class InformasiController extends Controller
             'bg-purple-100 text-purple-800',
             'fas fa-plus'
         );
-
-        return redirect()->route('get.info')->with('success', 'Information data has been created');
+        if ($user->operator->IDOperator = 0){
+            return redirect()->route('get.info')->with('success', 'Informasi data has been created');
+        }
+        else{
+            return redirect()->route('get.info.op')->with('success', 'Informasi data has been created');
+        }
     }
 
     public function show($id)

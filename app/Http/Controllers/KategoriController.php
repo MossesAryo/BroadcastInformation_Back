@@ -14,7 +14,9 @@ class KategoriController extends Controller
     {
         return view('panel.kategori.kategori', [
             'kategori' => kategoriinformasi::get(),
+             
         ]);
+        
     }
 
     /**

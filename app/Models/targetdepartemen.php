@@ -14,13 +14,12 @@ class targetdepartemen extends Model
         'ID_Departemen',
         'IDInformasi',
     ];
-    public function departemen()
-    {
-        return $this->belongsTo(KategoriInformasi::class, 'ID_Departemen');
-    }
-
     public function informasi()
     {
-        return $this->belongsTo(OperatorDepartemen::class, 'IDInformasi');
+        return $this->belongsTo(Informasi::class, 'IDInformasi', 'IDInformasi');
+    }
+    public function departemen()
+    {
+        return $this->belongsTo(Departemen::class, 'ID_Departemen', 'ID_Departemen');
     }
 }
