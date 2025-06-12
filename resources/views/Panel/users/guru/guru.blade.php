@@ -94,7 +94,7 @@
 
     <script>
         $(document).ready(function() {
-            // Initialize DataTable
+           
             var table = $('#gurutable').DataTable({
                 responsive: true,
                 processing: true,

@@ -83,7 +83,7 @@ class SiswaController extends Controller
     }
 
 
-        public function exportexcel()
+    public function exportexcel()
     {
         return Excel::download(new SiswaExport, 'Data_Siswa.xlsx');
     }
@@ -122,16 +122,16 @@ class SiswaController extends Controller
         return response()->download($path)->deleteFileAfterSend(true);
     }
 
-public function import(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-    ]);
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+        ]);
 
-    Excel::import(new SiswaImport, $request->file('file'));
+        Excel::import(new SiswaImport, $request->file('file'));
 
-    return redirect()->back()->with('success', 'Data siswa berhasil diimport!');
-}
+        return redirect()->back()->with('success', 'Data siswa berhasil diimport!');
+    }
 
 
     /**
@@ -207,10 +207,18 @@ public function import(Request $request)
      */
     public function destroy(string $id, string $id_user)
     {
-        // dd($id, $id_user);
+        $siswa = siswa::find($id); // pastikan 'id' adalah nama primary key
+        $user = User::find($id_user);
 
-        siswa::find($id)->delete();
-        User::find($id_user)->delete();
+        if ($siswa) {
+            $siswa->delete();
+        } else {
+            return back()->with('error', 'Data siswa tidak ditemukan');
+        }
+
+        if ($user) {
+            $user->delete();
+        }
         return redirect(route('siswa'))->with('success', 'Siswa berhasil dihapus');
     }
 }

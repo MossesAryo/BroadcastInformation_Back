@@ -31,20 +31,23 @@ class GuruController extends Controller
                     return $guru->user->email;
                 })
                 ->addcolumn('button', function ($guru) {
-                    return '
-        <div class="flex justify-center space-x-2">
-        <button title="Edit" onclick="window.location=\'' . url('/guru/' . $guru->ID_Guru . '/' . $guru->user->username .'/edit') . '\'">
+                     return '
+    <div class="flex justify-center space-x-2">
+        <button title="Edit" onclick="window.location=\'' . url('/guru/' . $guru->ID_Guru . '/' . $guru->user->username . '/edit') . '\'">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="#57B4BA" class="w-5 h-5">
                 <path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
             </svg>
         </button>
-        <button class="text-red-600 hover:text-red-900" title="Delete" onclick="openDeleteModal(\'' . $guru->ID_Guru . ',' . $guru->user->username . '\')">
+        <button class="text-red-600 hover:text-red-900" title="Hapus"
+                onclick="openConfirmModal(\'' . $guru->ID_Guru . '_' . $guru->user->username . '\')">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                    clip-rule="evenodd" />
             </svg>
         </button>
     </div>
-';
+';  
                 })
 
 
@@ -69,57 +72,57 @@ class GuruController extends Controller
 
     public function exportword()
     {
-       $guru = Guru::with('user')->get();
+        $guru = Guru::with('user')->get();
 
-    $phpWord = new PhpWord();
-    $section = $phpWord->addSection();
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
 
-    
-    $section->addText('Daftar Guru', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
-    $section->addTextBreak();
 
-    
-    $table = $section->addTable([
-        'borderSize' => 6,
-        'borderColor' => '999999',
-        'cellMargin' => 50
-    ]);
+        $section->addText('Daftar Guru', ['bold' => true, 'size' => 16], ['alignment' => 'center']);
+        $section->addTextBreak();
 
-    
-    $table->addRow();
-    $table->addCell(3000)->addText('NIP');
-    $table->addCell(5000)->addText('Nama Guru');
-    $table->addCell(6000)->addText('Email');
 
-    
-    foreach ($guru as $g) {
+        $table = $section->addTable([
+            'borderSize' => 6,
+            'borderColor' => '999999',
+            'cellMargin' => 50
+        ]);
+
+
         $table->addRow();
-        $table->addCell()->addText($g->ID_Guru);
-        $table->addCell()->addText($g->Nama_Guru);
-        $table->addCell()->addText($g->user->email ?? '-');
-    }
+        $table->addCell(3000)->addText('NIP');
+        $table->addCell(5000)->addText('Nama Guru');
+        $table->addCell(6000)->addText('Email');
 
-    $filename = 'data_guru.docx';
-    $path = storage_path("app/public/{$filename}");
 
-    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($path);
+        foreach ($guru as $g) {
+            $table->addRow();
+            $table->addCell()->addText($g->ID_Guru);
+            $table->addCell()->addText($g->Nama_Guru);
+            $table->addCell()->addText($g->user->email ?? '-');
+        }
 
-    return response()->download($path)->deleteFileAfterSend(true);
+        $filename = 'data_guru.docx';
+        $path = storage_path("app/public/{$filename}");
+
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($path);
+
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 
 
 
     public function import(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-    ]);
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+        ]);
 
-    Excel::import(new GuruImport, $request->file('file'));
+        Excel::import(new GuruImport, $request->file('file'));
 
-    return redirect()->back()->with('success', 'Data Guru berhasil diimport!');
-}
+        return redirect()->back()->with('success', 'Data Guru berhasil diimport!');
+    }
 
 
     /**
@@ -176,7 +179,7 @@ class GuruController extends Controller
      */
     public function update(Request $request, string $id, string $id_user)
     {
-       $request->validate([
+        $request->validate([
             'ID_Guru' => 'required',
             'Nama_Guru' => 'required|string|max:255',
             'username' => 'required|string|max:255',
