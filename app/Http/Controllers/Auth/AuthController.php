@@ -66,18 +66,12 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['login' => 'ID Operator/Username atau password salah.']);
         }
-
-        // Login dulu
         Auth::login($user);
         $request->session()->regenerate();
 
-        // Ambil operator ulang berdasarkan username
         $operator = OperatorDepartemen::where('username', $user->username)->first();
 
-        // dd($operator);
-
-
-        // Pastikan operator ditemukan
+        
         if (!$operator) {
             Auth::logout();
             return back()->withErrors(['login' => 'Operator tidak ditemukan.']);
