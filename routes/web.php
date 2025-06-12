@@ -8,7 +8,7 @@ use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
 use App\Http\Controllers\KalenderController;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Operator\InformasiOperatorController;
 
@@ -35,38 +35,6 @@ Route::get('/history', function () {
 })->name('history');
 
 
-Route::get('/history/filter', function (Request $request) {
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
-    $activity_type = $request->input('activity_type');
-    $search = $request->input('search');
-
-    $activities = session('activity_logs', []);
-
-    if ($start_date && $end_date) {
-        $activities = array_filter($activities, function ($activity) use ($start_date, $end_date) {
-            $created_at = \Carbon\Carbon::parse($activity['created_at']);
-            return $created_at->gte($start_date) && $created_at->lte($end_date);
-        });
-    }
-
-    if ($activity_type) {
-        $activities = array_filter($activities, function ($activity) use ($activity_type) {
-            return $activity['activity_type'] === $activity_type;
-        });
-    }
-
-    if ($search) {
-        $activities = array_filter($activities, function ($activity) use ($search) {
-            return stripos($activity['title'], $search) !== false || stripos($activity['description'], $search) !== false;
-        });
-    }
-
-    session(['activity_logs' => array_values($activities)]);
-    return view('Panel.history.history');
-})->name('history.filter');
-
-
 Route::get('/operator', function() {
     return view('Panel.users.operator.operator');
 })->name('user');
@@ -81,7 +49,7 @@ Route::post('/login/submit', [AuthController::class, 'submit'])->name('login.sub
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function(){ 
+Route::middleware('auth')->group(function(){
    Route::middleware('UserAccess:1,2,3')->group(function(){
     Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
 });
@@ -96,15 +64,15 @@ Route::middleware('auth')->group(function(){
     Route::get('/informasi/export/excel', [informasiController::class, 'exportexcel'])->name('export.excel.informasi');
     Route::get('/informasi/export/pdf', [informasiController::class, 'exportpdf'])->name('export.pdf.informasi');
     Route::get('/informasi/export/word', [informasiController::class, 'exportword'])->name('export.word.informasi');
-    
-    
+
+
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
     Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
     Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
     Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
     Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
     Route::get('/kategori/{id}/destroy', [KategoriController::class, 'destroy'])->name('kategori.destroy');
-    
+
     Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
     Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
     Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
@@ -115,8 +83,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/siswa/export/pdf', [SiswaController::class, 'exportpdf'])->name('export.pdf.siswa');
     Route::get('/siswa/export/word', [SiswaController::class, 'exportword'])->name('export.word.siswa');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
-    
-    
+
+
     Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
     Route::get('/departemen/create', [DepartemenController::class, 'create'])->name('departemen.create');
     Route::get('/departemen/{id}/edit', [DepartemenController::class, 'edit'])->name('departemen.edit');
@@ -126,8 +94,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/departemen/export/excel', [departemenController::class, 'exportexcel'])->name('export.excel.departemen');
     Route::get('/departemen/export/pdf', [departemenController::class, 'exportpdf'])->name('export.pdf.departemen');
     Route::get('/departemen/export/word', [departemenController::class, 'exportword'])->name('export.word.departemen');
-    
-    
+
+
     Route::get('/Opdept', [OperatorDepartemenController::class, 'index'])->name('get.op');
     Route::get('/Opdept/create', [OperatorDepartemenController::class, 'create'])->name('create.op');
     Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->name('store.op');
@@ -137,8 +105,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/Opdept/export/excel', [OperatorDepartemenController::class, 'exportexcel'])->name('export.excel.op');
     Route::get('/Opdept/export/pdf', [OperatorDepartemenController::class, 'exportpdf'])->name('export.pdf.op');
     Route::get('/Opdept/export/word', [OperatorDepartemenController::class, 'exportword'])->name('export.word.op');
-    
-    
+
+
     Route::get('/guru', [GuruController::class, 'index'])->name('get.guru');
     Route::get('/guru/create', [GuruController::class, 'create'])->name('create.guru');
     Route::get('/guru/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('edit.guru');
@@ -149,7 +117,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/guru/export/pdf', [GuruController::class, 'exportpdf'])->name('export.pdf.guru');
     Route::get('/guru/export/word', [GuruController::class, 'exportword'])->name('export.word.guru');
     Route::post('/guru/import', [GuruController::class, 'import'])->name('guru.import');
-    
+
     Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
     Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
     Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
