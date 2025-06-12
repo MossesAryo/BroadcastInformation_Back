@@ -1,4 +1,5 @@
 <?php
+
 use League\Uri\UriTemplate\Operator;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
@@ -13,19 +14,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Operator\InformasiOperatorController;
 
 
-Route::get('/dashboard', function() {
+Route::get('/dashboard', function () {
     return view('Panel.dashboard');
-
 });
 
 Route::get('/users', function () {
     return view('Panel.users.user');
 });
 
+Route::get('/notifikasi', function () {})->name('dashboard');
 Route::get('/notifikasi', function () {
-
-})->name('dashboard');
-Route::get('/notifikasi', function() {
 
     return view('Panel.notifikasi.notifikasi');
 })->name('notifikasi');
@@ -35,10 +33,10 @@ Route::get('/history', function () {
 })->name('history');
 
 
-Route::get('/operator', function() {
+Route::get('/operator', function () {
     return view('Panel.users.operator.operator');
 })->name('user');
-Route::get('/users', function() {
+Route::get('/users', function () {
     return view('Panel.users.user');
 })->name('users');
 
@@ -49,10 +47,10 @@ Route::post('/login/submit', [AuthController::class, 'submit'])->name('login.sub
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function(){
-   Route::middleware('UserAccess:1,2,3')->group(function(){
-    Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
-});
+Route::middleware('auth')->group(function () {
+    Route::middleware('UserAccess:1,2,3')->group(function () {
+        Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
+    });
 
     Route::get('/dashboard/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
     Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
