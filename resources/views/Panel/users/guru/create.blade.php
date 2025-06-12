@@ -36,6 +36,12 @@
 
                 <!-- Nama Kategori -->
                 <div>
+                    <label for="ID_Guru" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
+                    <input type="text" name="ID_Guru" id="ID_Guru" value=""
+                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        required>
+                </div>
+                <div>
                     <label for="Nama_Guru" class="block text-sm font-medium text-gray-700 mb-1">Nama Guru</label>
                     <input type="text" name="Nama_Guru" id="Nama_Guru" value=""
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"

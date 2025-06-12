@@ -103,7 +103,7 @@
                 },
                 columns: [{
                         data: 'ID_Siswa',
-                        name: 'ID_Siswa'
+                        name: 'ID_Siswa',
                     },
                     {
                         data: 'Nama_Siswa',

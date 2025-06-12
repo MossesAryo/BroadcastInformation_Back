@@ -150,6 +150,7 @@ public function import(Request $request)
     public function store(Request $request)
     {
         $request->validate([
+            'ID_Siswa' => 'required',
             'Nama_Siswa' => 'required|string|max:255',
             'username' => 'required|string|max:255',
         ]);
@@ -158,9 +159,11 @@ public function import(Request $request)
             'username' => $request->username,
             'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
             'password' => bcrypt('password'),
+            'role' => 4
         ]);
 
         Siswa::create([
+            'ID_Siswa' => $request->ID_Siswa,
             'Nama_Siswa' => $request->Nama_Siswa,
             'username' => $user->username,
         ]);

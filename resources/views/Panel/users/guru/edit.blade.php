@@ -1,7 +1,6 @@
 @extends('layout.template')
 @section('main')
     <div class="container mx-auto px-4 py-6">
-        <!-- Header Section -->
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h2 class="text-xl font-semibold text-gray-700">Edit Data Guru <strong>{{ $guru->Nama_Guru }}</strong>
@@ -18,7 +17,7 @@
             </a>
         </div>
 
-        <!-- Form Card -->
+        
         <div class="bg-white shadow-md rounded-md p-6">
             @if ($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
@@ -30,13 +29,19 @@
                 </div>
             @endif
 
-            {{-- enctype="multipart/form-data" --}}
+            
             <form action="{{ route('update.guru', [$guru->ID_Guru, $guru->username]) }}" method="POST"
                 class="space-y-6">
                 @csrf
                 @method('PUT')
 
-                <!-- Nama Kategori -->
+               
+                 <div>
+                    <label for="ID_Guru" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
+                    <input type="text" name="ID_Guru" id="ID_Guru" value="{{ $guru->ID_Guru }}"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        required>
+                </div>
                 <div>
                     <label for="Nama_Guru" class="block text-sm font-medium text-gray-700 mb-1">Nama Guru</label>
                     <input type="text" name="Nama_Guru" id="Nama_Guru" value="{{ $guru->Nama_Guru }}"
@@ -44,15 +49,12 @@
                         required>
                 </div>
 
-                <!-- Isi -->
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
                     <input type="text" name="username" id="username" value="{{ $guru->username }}"
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>
-
-                <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit"
                         class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-md transition duration-300">
