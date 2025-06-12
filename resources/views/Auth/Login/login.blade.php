@@ -61,7 +61,7 @@
                     @csrf
                     @method('POST')
                     <div>
-                        <label for="NIP" class="block text-sm font-medium text-gray-700 mb-2">NIP/NIS</label>
+                        <label for="NIP" class="block text-sm font-medium text-gray-700 mb-2">NIP</label>
                         <input type="text" id="NIP" placeholder="Masukan NIP/NIS" name="login"
                             class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom transition-colors duration-200"
                             required>
