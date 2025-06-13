@@ -53,7 +53,7 @@ class AuthController extends Controller
 
 
         if ($user->role == '0') {
-            return redirect()->route('dashboard');
+            return view('Panel.dashboard');
         }
         return redirect()->route('get.info.op');
     }
