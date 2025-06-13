@@ -30,6 +30,7 @@
             }
         }
     </script>
+    
     <style>
         [x-cloak] { display: none !important; }
         .bg-theme { background-color: #57B4BA; }

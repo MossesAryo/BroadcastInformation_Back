@@ -81,7 +81,7 @@ class AuthController extends Controller
         session(['operator' => $operator->toArray()]);
         
         if($user -> role == '0'){
-          return redirect()->route('dashboard');
+          return view('Panel.dashboard');
         }
         return redirect()->route('get.info.op');
     }

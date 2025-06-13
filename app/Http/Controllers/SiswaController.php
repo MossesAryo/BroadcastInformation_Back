@@ -207,7 +207,7 @@ class SiswaController extends Controller
      */
     public function destroy(string $id, string $id_user)
     {
-        $siswa = siswa::find($id); // pastikan 'id' adalah nama primary key
+        $siswa = siswa::find($id); 
         $user = User::find($id_user);
 
         if ($siswa) {
