@@ -49,6 +49,11 @@ class user extends Seeder
             'REGINA BUNGA PRATIWI',
             'RIANI DESTIANTI',
             'SITI DIYAH WULANDARI',
+            'Agus Setiawan',
+            'Rahmat Irianto',
+            'Fajar Bimo',
+            'Reegil aditya',
+            'Ableh rizky',
         ];
 
         $users = [];

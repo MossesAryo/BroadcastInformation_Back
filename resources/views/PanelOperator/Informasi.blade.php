@@ -56,10 +56,10 @@
                     <select id="categoryFilter"
                         class="py-1 px-3 border border-gray-300 rounded-md focus:ring-teal-500 text-sm">
                         <option value="">Semua Kategori</option>
-                        <option value="pengumuman">Pengumuman</option>
-                        <option value="berita">Berita</option>
-                        <option value="event">Event</option>
-                        <option value="informasi">Informasi Umum</option>
+                        @foreach ($informasi as $item )
+                        <option value="{{ strtolower($item->kategori->NamaKategori) }}">{{ $item->kategori->NamaKategori }}</option>
+                            
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -244,33 +244,6 @@
                     noResults.classList.add('hidden');
                 }
             }
-
-            // Detail modal functions
-            function showDetailModal(id, title, description, category, startDate, endDate) {
-                document.getElementById('modalTitle').textContent = title;
-
-                const modalContent = `
-                    <div class="mb-4">
-                        <span class="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">${category}</span>
-                        <span class="text-sm text-gray-500 ml-3">${startDate} - ${endDate}</span>
-                    </div>
-                    <div class="text-gray-700 leading-relaxed">${description}</div>
-                `;
-
-                document.getElementById('modalContent').innerHTML = modalContent;
-                document.getElementById('detailModal').classList.remove('hidden');
-            }
-
-            function closeDetailModal() {
-                document.getElementById('detailModal').classList.add('hidden');
-            }
-
-            // Close modal when clicking outside
-            document.getElementById('detailModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeDetailModal();
-                }
-            });
         </script>
     </body>
 @endsection

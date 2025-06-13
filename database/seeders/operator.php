@@ -13,7 +13,7 @@ class operator extends Seeder
      */
     public function run(): void
     {
-        $usernames = DB::table('users')->pluck('username')->slice(10, 5)->values();
+        $usernames = DB::table('users')->pluck('username')->slice(31, 5)->values();
        $departemen = DB::table('departemen')->pluck('ID_Departemen')->take(5)->values()->all();
 
         $operatorData = [];
