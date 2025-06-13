@@ -53,9 +53,9 @@ class AuthController extends Controller
 
 
 
-        
+
         session(['operator' => $operator->toArray()]);
-        
+
         if($user -> role == '0'){
           return redirect()->route('dashboard');
         }else{
@@ -66,6 +66,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
+        $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
