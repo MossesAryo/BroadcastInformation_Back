@@ -112,7 +112,7 @@
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tanggal
+                                Tanggal Mulai
                             </th>
                         </tr>
                     </thead>
@@ -123,11 +123,11 @@
                                     <div class="flex items-center">
                                         <div
                                             class="flex-shrink-0 h-8 w-8 rounded-full bg-theme flex items-center justify-center text-white">
-                                            <span>{{ $info->operator->initial ?? strtoupper(substr($info->operator->username, 0, 2)) }}</span>
+                                            <span>{{ $info->operator->initial ?? strtoupper(substr($info->operator->NamaOperatorDepartemen, 0, 2)) }}</span>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{ $info->operator->username }}
+                                                {{ $info->operator->NamaOperatorDepartemen }}
                                             </div>
                                         </div>
                                     </div>
