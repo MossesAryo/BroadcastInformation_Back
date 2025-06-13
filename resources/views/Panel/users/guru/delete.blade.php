@@ -1,4 +1,4 @@
-<!-- Delete Modal -->
+<!-- Confirm Modal -->
 <style>
     .modal-open {
         overflow: hidden;
@@ -12,15 +12,18 @@
 </style>
 
 @foreach ($guru as $item)
-    <input type="checkbox" id="deleteModalToggle{{ $item->ID_Guru, $item->username }}" class="hidden">
+    <input type="checkbox" id="confirmModalToggle{{ $item->ID_Guru }}_{{ $item->username }}" class="hidden">
     <div class="fixed inset-0 bg-black bg-opacity-50 z-40 modal-overlay hidden flex items-center justify-center"
-        id="deleteModalOverlay{{ $item->ID_Guru, $item->username }}" data-modal="deleteModal{{ $item->ID_Guru, $item->username }}">
+        id="confirmModalOverlay{{ $item->ID_Guru }}_{{ $item->username }}"
+        data-modal="confirmModal{{ $item->ID_Guru }}_{{ $item->username }}">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center p-6 border-b">
-                <h3 class="text-lg font-medium">Hapus Guru</h3>
-                <button type="button" onclick="closeDeleteModal('{{ $item->ID_Guru, $item->username }}')" class="cursor-pointer">
+                <h3 class="text-lg font-medium">Konfirmasi Hapus Guru</h3>
+                <button type="button" onclick="closeConfirmModal('{{ $item->ID_Guru }}_{{ $item->username }}')"
+                    class="cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -31,16 +34,15 @@
             </div>
             <form action="{{ route('destroy.guru', [$item->ID_Guru, $item->username]) }}" method="POST" class="inline">
                 <div class="px-6 py-4 border-t bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
-                    <button type="button" onclick="closeDeleteModal('{{ $item->ID_Guru, $item->username }}')"
+                    <button type="button" onclick="closeConfirmModal('{{ $item->ID_Guru }}_{{ $item->username }}')"
                         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400 cursor-pointer">
-                        Cancel
+                        Batal
                     </button>
-                    
                     @csrf
                     @method('DELETE')
                     <button type="submit"
                         class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-500 cursor-pointer">
-                        Delete Guru
+                        Hapus Guru
                     </button>
                 </div>
             </form>
@@ -49,8 +51,8 @@
 @endforeach
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        window.openDeleteModal = function (id) {
+    document.addEventListener('DOMContentLoaded', function() {
+        function openConfirmModal(id) {
             const overlay = document.getElementById(`deleteModalOverlay${id}`);
             const checkbox = document.getElementById(`deleteModalToggle${id}`);
 
@@ -60,11 +62,10 @@
                 overlay.classList.add('active');
                 document.body.classList.add('modal-open');
             }
-        };
-
-        window.closeDeleteModal = function (id) {
-            const overlay = document.getElementById(`deleteModalOverlay${id}`);
-            const checkbox = document.getElementById(`deleteModalToggle${id}`);
+        }
+        window.closeConfirmModal = function(id) {
+            const overlay = document.getElementById(`confirmModalOverlay${id}`);
+            const checkbox = document.getElementById(`confirmModalToggle${id}`);
 
             if (overlay && checkbox) {
                 checkbox.checked = false;
@@ -75,19 +76,19 @@
         };
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', function (e) {
+            overlay.addEventListener('click', function(e) {
                 if (e.target === this) {
-                    const id = this.dataset.modal.replace('deleteModal', '');
-                    closeDeleteModal(id);
+                    const id = this.dataset.modal.replace('confirmModal', '');
+                    closeConfirmModal(id);
                 }
             });
         });
 
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal-overlay.active').forEach(overlay => {
-                    const id = overlay.dataset.modal.replace('deleteModal', '');
-                    closeDeleteModal(id);
+                    const id = overlay.dataset.modal.replace('confirmModal', '');
+                    closeConfirmModal(id);
                 });
             }
         });

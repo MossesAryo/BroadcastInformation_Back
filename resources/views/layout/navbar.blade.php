@@ -8,7 +8,7 @@
                 </button>
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="text-white text-xl font-bold ml-2 md:ml-0">Admin Panel</span>
+                    <span class="text-white text-xl font-bold ml-2 md:ml-0">EduInform</span>
                 </div>
             </div>
 

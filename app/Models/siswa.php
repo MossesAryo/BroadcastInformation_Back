@@ -8,6 +8,7 @@ class siswa extends Model
 {
     protected $table = 'siswa';
     protected $primaryKey = 'ID_Siswa';
+    public $incrementing = false;
     public $timestamps = true;
 
     protected $fillable = ['ID_Siswa','Nama_Siswa', 'username'];

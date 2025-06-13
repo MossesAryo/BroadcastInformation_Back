@@ -36,6 +36,12 @@
 
                 <!-- Nama Kategori -->
                 <div>
+                    <label for="ID_Siswa" class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
+                    <input type="text" name="ID_Siswa" id="ID_Siswa" value=""
+                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        required>
+                </div>
+                <div>
                     <label for="Nama_Siswa" class="block text-sm font-medium text-gray-700 mb-1">Nama Siswa</label>
                     <input type="text" name="Nama_Siswa" id="Nama_Siswa" value=""
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -60,23 +66,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        function toggleDropdown() {
-            const menu = document.getElementById("dropdownMenu");
-            menu.classList.toggle("hidden");
-        }
-
-
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.closest(".relative")) {
-                const dropdowns = document.getElementById("dropdownMenu");
-                if (!dropdowns.classList.contains("hidden")) {
-                    dropdowns.classList.add("hidden");
-                }
-            }
-        }
-    </script>
 @endsection
