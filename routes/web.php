@@ -5,6 +5,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('UserAccess:1,2,3')->group(function () {
         Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
     });
+
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
     Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
