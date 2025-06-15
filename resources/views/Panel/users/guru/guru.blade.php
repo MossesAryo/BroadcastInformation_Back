@@ -91,6 +91,7 @@
     </div>
 
     @include('Panel.users.guru.modalExportImport')
+    @include('Panel.users.guru.delete')
 
     <script>
         $(document).ready(function() {

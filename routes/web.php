@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/guru/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('edit.guru');
     Route::post('/guru/store', [GuruController::class, 'store'])->name('store.guru');
     Route::put('/guru/{id}/{id_user}/update', [GuruController::class, 'update'])->name('update.guru');
-    Route::get('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy.guru');
+    Route::delete('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy.guru');
     Route::get('/guru/export/excel', [GuruController::class, 'exportexcel'])->name('export.excel.guru');
     Route::get('/guru/export/pdf', [GuruController::class, 'exportpdf'])->name('export.pdf.guru');
     Route::get('/guru/export/word', [GuruController::class, 'exportword'])->name('export.word.guru');
