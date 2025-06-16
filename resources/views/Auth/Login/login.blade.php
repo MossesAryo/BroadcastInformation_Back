@@ -101,7 +101,7 @@
 
                     </div>
                     <h1 class="text-2xl font-bold text-gray-900 mb-1">Welcome Back</h1>
-                    <p class="text-gray-600 text-sm">Sign in to access your account</p>
+                    <p class="text-gray-600 text-sm">Log In untuk mengakses akun</p>
                 </div>
 
                 @if ($errors->any())
@@ -123,8 +123,8 @@
                     @csrf
                     @method('POST')
                     <div>
-                        <label for="NIP" class="block text-sm font-semibold text-gray-700 mb-2">NIP / NIS</label>
-                        <input type="text" id="NIP" placeholder="Masukan NIP/NIS" name="login"
+                        <label for="NIP" class="block text-sm font-semibold text-gray-700 mb-2">NIP</label>
+                        <input type="text" id="NIP" placeholder="Masukan NIP" name="login" x-model="loginInput"
                             class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-custom focus:border-custom input-focus transition-all duration-300"
                             required>
                     </div>
@@ -156,13 +156,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="remember" x-model="rememberMe"
-                                class="w-4 h-4 text-custom bg-white border-gray-300 rounded focus:ring-custom focus:ring-2">
-                            <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
-                        </div>
-                    </div>
+                    
 
                     <button type="submit" :disabled="loading"
                         class="w-full bg-custom hover:bg-opacity-90 disabled:bg-opacity-60 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center btn-hover shadow-lg">
@@ -240,7 +234,7 @@
     <script>
         function loginForm() {
             return {
-                email: '',
+                loginInput: '',
                 password: '',
                 rememberMe: false,
                 showPassword: false,

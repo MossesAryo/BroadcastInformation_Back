@@ -65,7 +65,7 @@ class InformasiController extends Controller
                     return '
                     <div class="flex justify-center space-x-2">
                         <button class="text-gray-600 hover:text-gray-900" title="View"
-                            onclick="window.location.href=\'' . route('show.info', $informasi->IDInformasi) . '\'">
+                            onclick="window.location.href=\'' . route('informasi.show', $informasi->IDInformasi) . '\'">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                                 <path fill-rule="evenodd"

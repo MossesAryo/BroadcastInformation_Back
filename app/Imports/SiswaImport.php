@@ -22,12 +22,14 @@ class SiswaImport implements ToModel, WithHeadingRow
         ], [
             'email' => $email,
             'password' => bcrypt('password'), 
+            'role' => 4
         ]);
 
         return new Siswa([
             'ID_Siswa'   => $row['nis'],
             'Nama_Siswa' => $row['nama_siswa'],
             'username'   => $email,
+            
         ]);
     }
 }

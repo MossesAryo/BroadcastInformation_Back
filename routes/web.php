@@ -130,10 +130,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('operator-departemen')->name('op.')->group(function () {
         Route::get('/', [OperatorDepartemenController::class, 'index'])->name('index');
         Route::get('/create', [OperatorDepartemenController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit');
+        Route::get('/{IDOperator}/{ID_Departemen}/{username}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit');
         Route::post('/store', [OperatorDepartemenController::class, 'store'])->name('store');
-        Route::put('/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update');
-        Route::get('/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy');
+        Route::put('/{IDOperator}/{ID_Departemen}/{username}/update', [OperatorDepartemenController::class, 'update'])->name('update');
+        Route::get('/{IDOperator}/{ID_Departemen}/{username}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy');
         
         // Export routes
         Route::prefix('export')->name('export.')->group(function () {

@@ -1,9 +1,9 @@
 <nav class="bg-theme text-white shadow-md">
     <div class="max-w-full mx-auto px-4">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between items-center h-16">
             <div class="flex items-center">
                 <!-- Mobile menu button -->
-                <button @click="sidebarOpen = !sidebarOpen" type="button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-white">
+                <button @click="sidebarOpen = !sidebarOpen" type="button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-10 transition duration-200">
                     <i class="fas fa-bars fa-lg"></i>
                 </button>
                 <!-- Logo -->
@@ -11,26 +11,14 @@
                     <span class="text-white text-xl font-bold ml-2 md:ml-0">EduInform</span>
                 </div>
             </div>
-
-            <!-- Right side menu -->
-            <div class="flex items-center space-x-4">
-                <!-- User menu -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center text-sm rounded-full focus:outline-none">
-                        <div class="h-8 w-8  bg-white flex items-center justify-center text-theme">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                              </svg>
-
-                        </div>
-                    </button>
-                    <!-- User dropdown menu -->
-                    <div x-show="open" @click.away="open = false" x-cloak class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu">
-
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                        <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
-                    </div>
-                </div>
+            
+            <!-- Sign Out Button -->
+            <div class="flex items-center">
+                <a href="{{ route('logout') }}" 
+                   class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition duration-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-transparent">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Sign Out
+                </a>
             </div>
         </div>
     </div>

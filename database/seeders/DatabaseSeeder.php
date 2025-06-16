@@ -17,11 +17,8 @@ class DatabaseSeeder extends Seeder
        $this->call([
             user::class,
             Departemen::class,
-            Guru::class,
-            Siswa::class,
             Operator::class,
             kategori::class,
-            informasi::class,
         ]);
     }
 }

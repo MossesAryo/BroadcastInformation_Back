@@ -8,16 +8,16 @@
                     <p class="text-sm text-gray-500">Kelola data Operator</p>
                 </div>
                 <div class="flex gap-3">
-                <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
-                    onclick="window.location='{{ route('op.create') }}'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Tambah Operator
-                </button>
-            </div>
+                    <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md flex items-center"
+                        onclick="window.location='{{ route('op.create') }}'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Tambah Operator
+                    </button>
+                </div>
             </div>
 
             <div class="overflow-x-auto rounded-lg">
@@ -41,9 +41,10 @@
                                 <td class="px-6 py-4 font-medium">{{ $item->user->email }}
                                 <td class="px-6 py-4 font-medium">{{ $item->created_at }}
                                 <td class="px-6 py-4 text-center space-x-2">
-                                    <a href="{{ route('op.edit', $item->IDOperator) }}"
+                                    <a href="{{ route('op.edit', [$item->IDOperator, $item->ID_Departemen, $item->username]) }}"
                                         class="text-[#57B4BA] hover:underline">Edit</a>
-                                    <a href="{{ route('op.destroy', $item->IDOperator) }}"
+
+                                    <a href="{{ route('op.destroy', [$item->IDOperator, $item->ID_Departemen, $item->username]) }}"
                                         class="text-red-500 hover:underline">Delete</a>
                                 </td>
                             </tr>

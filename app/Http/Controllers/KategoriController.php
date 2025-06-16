@@ -44,7 +44,7 @@ class KategoriController extends Controller
         ]);
 
         kategoriinformasi::create($request->all());
-        return redirect()->route('kategori')->with('success', 'Kategori berhasil ditambahkan');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -76,7 +76,7 @@ class KategoriController extends Controller
         ]);
 
         kategoriinformasi::find($id)->update($data);
-        return redirect()->route('kategori')->with('success', 'Kategori berhasil diedit');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diedit');
     }
 
     /**
@@ -84,8 +84,8 @@ class KategoriController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = kategoriinformasi::find($id)->delete();
+        kategoriinformasi::find($id)->delete();
 
-        return redirect()->route('kategori')->with('success', 'Kategori berhasil dihapus');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

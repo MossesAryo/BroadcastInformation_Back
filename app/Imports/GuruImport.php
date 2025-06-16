@@ -20,13 +20,15 @@ class GuruImport implements ToModel, WithHeadingRow
             'username' => $email,
         ], [
             'email' => $email,
-            'password' => bcrypt('password'), 
+            'password' => bcrypt('password'),
+            'role' => 4
         ]);
 
         return new Guru([
             'ID_Guru'   => $row['nip'],
             'Nama_Guru' => $row['nama_guru'],
             'username'   => $email,
+
         ]);
     }
 }

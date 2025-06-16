@@ -18,7 +18,7 @@ class AuthController extends Controller
         return view('Auth.Login.login');
     }
 
-    public function submit(Request $request)
+     public function submit(Request $request)
     {
         $request->validate([
             'login' => 'required|string',
@@ -28,38 +28,46 @@ class AuthController extends Controller
         $loginInput = $request->login;
         $user = null;
 
+        // Check if login input is numeric (NIP/NIS)
         if (is_numeric($loginInput)) {
             $operator = OperatorDepartemen::find($loginInput);
             if ($operator && $operator->username) {
                 $user = User::where('username', $operator->username)->first();
             }
         } else {
+            // Direct username login
             $user = User::where('username', $loginInput)->first();
         }
 
+        // Verify user exists and password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['login' => 'ID Operator/Username atau password salah.']);
         }
-        Auth::login($user);
+
+        // Get remember me preference
+        $remember = $request->has('remember');
+
+        // Login user with remember me option
+        Auth::login($user, $remember);
+
+        // Regenerate session for security
         $request->session()->regenerate();
 
+        // Get operator information
         $operator = OperatorDepartemen::where('username', $user->username)->first();
-
-
         if (!$operator) {
             Auth::logout();
             return back()->withErrors(['login' => 'Operator tidak ditemukan.']);
         }
 
-
-
-
+        // Store operator info in session
         session(['operator' => $operator->toArray()]);
 
-        if($user -> role == '0'){
-          return redirect()->route('dashboard');
-        }else{
-        return redirect()->route('get.info.op');
+        // Redirect based on user role
+        if ($user->role == '0') {
+            return redirect()->route('dashboard');
+        } else {
+            return redirect()->route('get.info.op');
         }
     }
     public function logout(Request $request)

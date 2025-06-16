@@ -35,7 +35,7 @@
                 @csrf
                 @method('put')
 
-                <!-- Nama Kategori -->
+                
                 <div>
                     <label for="Nama_Departemen" class="block text-sm font-medium text-gray-700 mb-1">Nama
                         Departemen</label>

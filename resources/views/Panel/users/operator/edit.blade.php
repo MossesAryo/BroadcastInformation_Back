@@ -33,8 +33,13 @@
 
             {{-- enctype="multipart/form-data" --}}
             <form
-                action="{{ route('op.update', $operatordepartemen->IDOperator) }}"
+                action="{{ route('op.update', [
+                    $operatordepartemen->IDOperator,
+                    $operatordepartemen->ID_Departemen, 
+                    $operatordepartemen->username, 
+                ]) }}"
                 method="POST" class="space-y-6">
+
                 @csrf
                 @method('PUT')
 
@@ -82,5 +87,5 @@
         </div>
     </div>
 
-    
+
 @endsection
