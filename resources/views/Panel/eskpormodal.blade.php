@@ -15,12 +15,12 @@
 
         <!-- Pilihan -->
         <div class="grid gap-4">
-            <form action="{{ route('siswa') }}" method="GET">
+            <form action="{{ route('siswa.index') }}" method="GET">
                 <button type="submit" class="user-type-card w-full text-left p-4 border rounded cursor-pointer hover:bg-blue-50">
                     Siswa
                 </button>
             </form>
-            <form action="{{ route('get.guru') }}" method="GET">
+            <form action="{{ route('guru.index') }}" method="GET">
                 <button type="submit" class="user-type-card w-full text-left p-4 border rounded cursor-pointer hover:bg-blue-50">
                     Guru
                 </button>

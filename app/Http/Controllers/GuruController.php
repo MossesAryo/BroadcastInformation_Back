@@ -164,7 +164,7 @@ class GuruController extends Controller
             'username' => $user->username,
         ]);
 
-        return redirect()->route('get.guru')->with('success', 'Guru berhasil ditambahkan');
+        return redirect()->route('guru.index')->with('success', 'Guru berhasil ditambahkan');
     }
 
 
@@ -199,7 +199,7 @@ class GuruController extends Controller
             'Nama_Guru' => $request->Nama_Guru
         ]);
 
-        return redirect()->route('get.guru')->with('success', 'guru berhasil diedit');
+        return redirect()->route('guru.index')->with('success', 'guru berhasil diedit');
     }
 
 
@@ -222,6 +222,6 @@ class GuruController extends Controller
         }
 
 
-        return redirect(route('get.guru'))->with('success', 'Guru berhasil dihapus');
+        return redirect(route('guru.index'))->with('success', 'Guru berhasil dihapus');
     }
 }

@@ -20,16 +20,6 @@
                         </svg>
                         Tambah Informasi
                     </button>
-                    <button id="exportImportBtn"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Export/Import
-                    </button>
                 </div>
             </div>
 
@@ -57,8 +47,7 @@
                         class="py-1 px-3 border border-gray-300 rounded-md focus:ring-teal-500 text-sm">
                         <option value="">Semua Kategori</option>
                         @foreach ($informasi as $item )
-                        <option value="{{ strtolower($item->kategori->NamaKategori) }}">{{ $item->kategori->NamaKategori }}</option>
-                            
+                        <option value="{{ strtolower($item->kategori->NamaKategori) }}">{{ $item->kategori->NamaKategori }}</option>  
                         @endforeach
                     </select>
                 </div>
@@ -148,10 +137,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                     </svg>
-                                    {{ $item->operator->NamaOperatorDepartemen }}
+                                    {{ $item->operator->departemen->Nama_Departemen }}
                                 </div>
                                 <button class="text-teal-600 hover:text-teal-800 text-sm font-medium"
-                                    onclick="window.location = '{{ route('show.info', $item->IDInformasi) }}'">
+                                    onclick="window.location = '{{ route('informasi.show', $item->IDInformasi) }}'">
                                     Baca Selengkapnya
                                 </button>
                             </div>

@@ -123,7 +123,7 @@
                                     <div class="flex items-center">
                                         <div
                                             class="flex-shrink-0 h-8 w-8 rounded-full bg-theme flex items-center justify-center text-white">
-                                            <span>{{ $info->operator->initial ?? strtoupper(substr($info->operator->NamaOperatorDepartemen, 0, 2)) }}</span>
+                                            <span>{{ $info->operator->initial ?? strtoupper(substr($info->operator->departemen->Nama_Departemen, 0, 2)) }}</span>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
@@ -168,7 +168,7 @@
                     </button>
                 </a>
 
-                <button onclick="window.location='{{ route('kategori') }}'"
+                <button onclick="window.location='{{ route('kategori.index') }}'"
                     class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-lg hover:border-theme hover:text-theme">
                     <div class="rounded-full bg-theme-light p-3 mb-2">
                         <i class="fas fa-box text-theme"></i>

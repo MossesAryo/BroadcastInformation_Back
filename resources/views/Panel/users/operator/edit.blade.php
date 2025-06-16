@@ -8,7 +8,7 @@
                     <strong>{{ $operatordepartemen->NamaOperatorDepartemen }}</strong>
             </div>
 
-            <a href="{{ route('get.op') }}"
+            <a href="{{ route('op.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -33,7 +33,7 @@
 
             {{-- enctype="multipart/form-data" --}}
             <form
-                action="{{ route('update.op', [$operatordepartemen->IDOperator, $operatordepartemen->ID_Departemen]) }}"
+                action="{{ route('op.update', $operatordepartemen->IDOperator) }}"
                 method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')

@@ -89,7 +89,7 @@ class DepartemenController extends Controller
         ]);
 
         departemen::create($request->all());
-        return redirect()->route('departemen')->with('success', 'Departemen berhasil ditambahkan');
+        return redirect()->route('departemen.index')->with('success', 'Departemen berhasil ditambahkan');
     }
 
     /**
@@ -117,11 +117,10 @@ class DepartemenController extends Controller
     {
         $data = $request->validate([
             'Nama_Departemen' => 'required',
-            'Email_Departemen' => 'required',
         ]);
 
         departemen::find($id)->update($data);
-        return redirect()->route('departemen')->with('success', 'Departemen berhasil ditambahkan');
+        return redirect()->route('departemen.index')->with('success', 'Departemen berhasil ditambahkan');
     }
 
     /**
@@ -131,6 +130,6 @@ class DepartemenController extends Controller
     {
         departemen::find($id)->delete();
 
-        return redirect()->route('departemen')->with('success', 'Departemen berhasil dihapus');
+        return redirect()->route('departemen.index')->with('success', 'Departemen berhasil dihapus');
     }
 }

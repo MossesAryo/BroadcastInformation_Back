@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-semibold text-gray-700">Edit Departemen <strong>{{ $departemen->Nama_Departemen }}</strong></h2>
             </div>
 
-            <a href="{{ route('kategori') }}"
+            <a href="{{ route('departemen.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -43,16 +43,6 @@
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                         required>
                 </div>
-
-                <!-- Isi -->
-                <div>
-                    <label for="Email_Departemen" class="block text-sm font-medium text-gray-700 mb-1">Email
-                        Departemen</label>
-                    <input type="email" name="Email_Departemen" id="Email_Departemen" value="{{ $departemen->Email_Departemen }}"
-                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                        required>
-                </div>
-
                 <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit"

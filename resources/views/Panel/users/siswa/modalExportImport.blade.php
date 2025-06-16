@@ -29,21 +29,21 @@
                         <div class="space-y-3">
                             <h4 class="text-sm font-medium text-gray-700 mb-3">Pilih format export:</h4>
                             
-                            <button onclick="window.location='{{ route('export.excel.siswa') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-green-300 rounded-md bg-green-50 hover:bg-green-100 text-green-700 transition-colors">
+                            <button onclick="window.location='{{ route('siswa.export.excel') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-green-300 rounded-md bg-green-50 hover:bg-green-100 text-green-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 2h8v2H6V6zm0 4h8v2H6v-2zm0 4h8v2H6v-2z"/>
                                 </svg>
                                 Export ke Excel (.xlsx)
                             </button>
 
-                            <button onclick="window.location='{{ route('export.pdf.siswa') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
+                            <button onclick="window.location='{{ route('siswa.export.pdf') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z"/>
                                 </svg>
                                 Export ke PDF (.pdf)
                             </button>
 
-                            <button onclick="window.location='{{ route('export.word.siswa') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-blue-300 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors">
+                            <button onclick="window.location='{{ route('siswa.export.word') }}'" class="w-full flex items-center justify-center px-4 py-3 border border-blue-300 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z"/>
                                 </svg>

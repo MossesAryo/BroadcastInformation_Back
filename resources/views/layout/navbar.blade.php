@@ -14,11 +14,6 @@
 
             <!-- Right side menu -->
             <div class="flex items-center space-x-4">
-                <!-- Notifications -->
-                <button onclick="window.location='{{ route('notifikasi') }}'" class="p-2 text-white relative">
-                    <i class="fas fa-bell fa-lg"></i>
-                </button>
-
                 <!-- User menu -->
                 <div class="relative" x-data="{ open: false }">
                     <button @click="open = !open" class="flex items-center text-sm rounded-full focus:outline-none">

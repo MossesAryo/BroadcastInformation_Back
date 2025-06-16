@@ -59,7 +59,7 @@ class InformasiController extends Controller
                     return $informasi->kategori->NamaKategori;
                 })
                 ->addColumn('IDOperator', function ($informasi) {
-                    return $informasi->operator->NamaOperatorDepartemen;
+                    return $informasi->operator->departemen->Nama_Departemen;
                 })
                 ->addColumn('button', function ($informasi) {
                     return '
@@ -153,14 +153,24 @@ class InformasiController extends Controller
         return response()->download($path)->deleteFileAfterSend(true);
     }
 
-    public function create()
-    {
-        return view('Panel.informasi.createinformasi', [
-            'informasi' => informasi::latest()->get(),
-            'kategori' => kategoriinformasi::get(),
-            'departemen' => departemen::get()
-        ]);
-    }
+   public function create()
+{
+    $authUsername = Auth::user()->username;
+
+    // Ambil ID departemen yang sudah digunakan oleh operator yang sedang login
+    $usedDepartemenIDs = OperatorDepartemen::where('username', $authUsername)
+        ->pluck('ID_Departemen');
+
+    // Ambil hanya departemen yang belum digunakan oleh operator login
+    $departemen = Departemen::whereNotIn('ID_Departemen', $usedDepartemenIDs)->get();
+
+    return view('Panel.informasi.createinformasi', [
+        'informasi' => Informasi::latest()->get(),
+        'kategori' => KategoriInformasi::get(),
+        'departemen' => $departemen
+    ]);
+}
+
 
     public function store(InformasiRequest $request)
     {
@@ -215,7 +225,7 @@ class InformasiController extends Controller
             'fas fa-plus'
         );
         if ($user->operator->IDOperator = 0){
-            return redirect()->route('get.info')->with('success', 'Informasi data has been created');
+            return redirect()->route('informasi.index')->with('success', 'Informasi data has been created');
         }
         else{
             return redirect()->route('get.info.op')->with('success', 'Informasi data has been created');
@@ -231,7 +241,7 @@ class InformasiController extends Controller
 
             return view('panel.informasi.viewinformasi', compact('informasi'));
         } catch (\Exception $e) {
-            return redirect()->route('index.info')
+            return redirect()->route('informasi.index')
                 ->with('error', 'Informasi tidak ditemukan: ' . $e->getMessage());
         }
     }

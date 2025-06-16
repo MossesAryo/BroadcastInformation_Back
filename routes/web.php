@@ -1,126 +1,191 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use League\Uri\UriTemplate\Operator;
+
+// Controllers
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\OperatorDepartemenController;
 use App\Http\Controllers\KalenderController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Operator\InformasiOperatorController;
 
-
-Route::get('/dashboard', function () {
-    return view('Panel.dashboard');
-});
-
-Route::get('/users', function () {
-    return view('Panel.users.user');
-});
-
-Route::get('/notifikasi', function () {})->name('dashboard');
-Route::get('/notifikasi', function () {
-
-    return view('Panel.notifikasi.notifikasi');
-})->name('notifikasi');
-
-Route::get('/history', function () {
-    return view('Panel.history.history');
-})->name('history');
-
-
-Route::get('/operator', function () {
-    return view('Panel.users.operator.operator');
-})->name('user');
-Route::get('/users', function () {
-    return view('Panel.users.user');
-})->name('users');
-
-
-
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('/login/submit', [AuthController::class, 'submit'])->name('login.submit');
-
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| Protected Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Role-Based Access Routes
+    |--------------------------------------------------------------------------
+    */
     Route::middleware('UserAccess:1,2,3')->group(function () {
         Route::get('/informasi/create', [InformasiController::class, 'create'])->name('create.info');
     });
-
-    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
-
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Informasi Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('informasi')->name('informasi.')->group(function () {
+        Route::get('/', [InformasiController::class, 'index'])->name('index');
+        Route::get('/data', [InformasiController::class, 'getData'])->name('data');
+        Route::get('/{id}', [InformasiController::class, 'show'])->name('show');
+        Route::post('/create', [InformasiController::class, 'store'])->name('store');
+        Route::delete('/destroy/{id}', [InformasiController::class, 'destroy'])->name('destroy');
+        
+        // Export routes
+        Route::prefix('export')->name('export.')->group(function () {
+            Route::get('/excel', [InformasiController::class, 'exportexcel'])->name('excel');
+            Route::get('/pdf', [InformasiController::class, 'exportpdf'])->name('pdf');
+            Route::get('/word', [InformasiController::class, 'exportword'])->name('word');
+        });
+    });
     Route::get('/dashboard/op', [InformasiOperatorController::class, 'index'])->name('get.info.op');
-    Route::get('/informasi', [InformasiController::class, 'index'])->name('get.info');
-    Route::post('/create', [InformasiController::class, 'store'])->name('post.info');
-    Route::delete('informasi/destroy/{id}', [InformasiController::class, 'destroy'])->name('destroy.info');
-    Route::get('kategori/list', [InformasiController::class, 'getKategoriList'])->name('kategori.list');
-    Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('show.info');
-    Route::get('informasi/data', [InformasiController::class, 'getData'])->name('informasi.data');
-    Route::get('/informasi/export/excel', [informasiController::class, 'exportexcel'])->name('export.excel.informasi');
-    Route::get('/informasi/export/pdf', [informasiController::class, 'exportpdf'])->name('export.pdf.informasi');
-    Route::get('/informasi/export/word', [informasiController::class, 'exportword'])->name('export.word.informasi');
-
-
-    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
-    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
-    Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
-    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
-    Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
-    Route::get('/kategori/{id}/destroy', [KategoriController::class, 'destroy'])->name('kategori.destroy');
-
-    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
-    Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
-    Route::get('/siswa/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
-    Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
-    Route::put('/siswa/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('siswa.update');
-    Route::delete('/siswa/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
-    Route::get('/siswa/export/excel', [SiswaController::class, 'exportexcel'])->name('export.excel.siswa');
-    Route::get('/siswa/export/pdf', [SiswaController::class, 'exportpdf'])->name('export.pdf.siswa');
-    Route::get('/siswa/export/word', [SiswaController::class, 'exportword'])->name('export.word.siswa');
-    Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
-
-
-    Route::get('/departemen', [DepartemenController::class, 'index'])->name('departemen');
-    Route::get('/departemen/create', [DepartemenController::class, 'create'])->name('departemen.create');
-    Route::get('/departemen/{id}/edit', [DepartemenController::class, 'edit'])->name('departemen.edit');
-    Route::post('/departemen/store', [DepartemenController::class, 'store'])->name('departemen.store');
-    Route::put('/departemen/{id}/update', [DepartemenController::class, 'update'])->name('departemen.update');
-    Route::get('/departemen/{id}/destroy', [DepartemenController::class, 'destroy'])->name('departemen.destroy');
-    Route::get('/departemen/export/excel', [departemenController::class, 'exportexcel'])->name('export.excel.departemen');
-    Route::get('/departemen/export/pdf', [departemenController::class, 'exportpdf'])->name('export.pdf.departemen');
-    Route::get('/departemen/export/word', [departemenController::class, 'exportword'])->name('export.word.departemen');
-
-
-    Route::get('/Opdept', [OperatorDepartemenController::class, 'index'])->name('get.op');
-    Route::get('/Opdept/create', [OperatorDepartemenController::class, 'create'])->name('create.op');
-    Route::post('/Opdept/store', [OperatorDepartemenController::class, 'store'])->name('store.op');
-    Route::get('/Opdept/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit.op');
-    Route::put('/Opdept/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update.op');
-    Route::get('/Opdept/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy.op');
-    Route::get('/Opdept/export/excel', [OperatorDepartemenController::class, 'exportexcel'])->name('export.excel.op');
-    Route::get('/Opdept/export/pdf', [OperatorDepartemenController::class, 'exportpdf'])->name('export.pdf.op');
-    Route::get('/Opdept/export/word', [OperatorDepartemenController::class, 'exportword'])->name('export.word.op');
-
-
-    Route::get('/guru', [GuruController::class, 'index'])->name('get.guru');
-    Route::get('/guru/create', [GuruController::class, 'create'])->name('create.guru');
-    Route::get('/guru/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('edit.guru');
-    Route::post('/guru/store', [GuruController::class, 'store'])->name('store.guru');
-    Route::put('/guru/{id}/{id_user}/update', [GuruController::class, 'update'])->name('update.guru');
-    Route::delete('/guru/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy.guru');
-    Route::get('/guru/export/excel', [GuruController::class, 'exportexcel'])->name('export.excel.guru');
-    Route::get('/guru/export/pdf', [GuruController::class, 'exportpdf'])->name('export.pdf.guru');
-    Route::get('/guru/export/word', [GuruController::class, 'exportword'])->name('export.word.guru');
-    Route::post('/guru/import', [GuruController::class, 'import'])->name('guru.import');
-
-    Route::get('/kalender', [KalenderController::class, 'index'])->name('kalender.index');
-    Route::get('/kalender/events', [KalenderController::class, 'fetchEvents'])->name('kalender.events');
-    Route::post('/kalender/store', [KalenderController::class, 'store'])->name('kalender.store');
-    Route::delete('/kalender/{id}/destroy', [KalenderController::class, 'destroy'])->name('kalender.destroy');
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Kategori Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('kategori')->name('kategori.')->group(function () {
+        Route::get('/', [KategoriController::class, 'index'])->name('index');
+        Route::get('/create', [KategoriController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [KategoriController::class, 'edit'])->name('edit');
+        Route::post('/store', [KategoriController::class, 'store'])->name('store');
+        Route::put('/{id}/update', [KategoriController::class, 'update'])->name('update');
+        Route::get('/{id}/destroy', [KategoriController::class, 'destroy'])->name('destroy');
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Siswa Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('siswa')->name('siswa.')->group(function () {
+        Route::get('/', [SiswaController::class, 'index'])->name('index');
+        Route::get('/create', [SiswaController::class, 'create'])->name('create');
+        Route::get('/{id}/{id_user}/edit', [SiswaController::class, 'edit'])->name('edit');
+        Route::post('/store', [SiswaController::class, 'store'])->name('store');
+        Route::put('/{id}/{id_user}/update', [SiswaController::class, 'update'])->name('update');
+        Route::delete('/{id}/{id_user}/destroy', [SiswaController::class, 'destroy'])->name('destroy');
+        Route::post('/import', [SiswaController::class, 'import'])->name('import');
+        
+        // Export routes
+        Route::prefix('export')->name('export.')->group(function () {
+            Route::get('/excel', [SiswaController::class, 'exportexcel'])->name('excel');
+            Route::get('/pdf', [SiswaController::class, 'exportpdf'])->name('pdf');
+            Route::get('/word', [SiswaController::class, 'exportword'])->name('word');
+        });
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Departemen Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('departemen')->name('departemen.')->group(function () {
+        Route::get('/', [DepartemenController::class, 'index'])->name('index');
+        Route::get('/create', [DepartemenController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [DepartemenController::class, 'edit'])->name('edit');
+        Route::post('/store', [DepartemenController::class, 'store'])->name('store');
+        Route::put('/{id}/update', [DepartemenController::class, 'update'])->name('update');
+        Route::get('/{id}/destroy', [DepartemenController::class, 'destroy'])->name('destroy');
+        
+        // Export routes
+        Route::prefix('export')->name('export.')->group(function () {
+            Route::get('/excel', [DepartemenController::class, 'exportexcel'])->name('excel');
+            Route::get('/pdf', [DepartemenController::class, 'exportpdf'])->name('pdf');
+            Route::get('/word', [DepartemenController::class, 'exportword'])->name('word');
+        });
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Operator Departemen Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('operator-departemen')->name('op.')->group(function () {
+        Route::get('/', [OperatorDepartemenController::class, 'index'])->name('index');
+        Route::get('/create', [OperatorDepartemenController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [OperatorDepartemenController::class, 'edit'])->name('edit');
+        Route::post('/store', [OperatorDepartemenController::class, 'store'])->name('store');
+        Route::put('/{id}/update', [OperatorDepartemenController::class, 'update'])->name('update');
+        Route::get('/{id}/destroy', [OperatorDepartemenController::class, 'destroy'])->name('destroy');
+        
+        // Export routes
+        Route::prefix('export')->name('export.')->group(function () {
+            Route::get('/excel', [OperatorDepartemenController::class, 'exportexcel'])->name('excel');
+            Route::get('/pdf', [OperatorDepartemenController::class, 'exportpdf'])->name('pdf');
+            Route::get('/word', [OperatorDepartemenController::class, 'exportword'])->name('word');
+        });
+    });
+    /*
+    |--------------------------------------------------------------------------
+    | Guru Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('guru')->name('guru.')->group(function () {
+        Route::get('/', [GuruController::class, 'index'])->name('index');
+        Route::get('/create', [GuruController::class, 'create'])->name('create');
+        Route::get('/{id}/{id_user}/edit', [GuruController::class, 'edit'])->name('edit');
+        Route::post('/store', [GuruController::class, 'store'])->name('store');
+        Route::put('/{id}/{id_user}/update', [GuruController::class, 'update'])->name('update');
+        Route::delete('/{id}/{id_user}/destroy', [GuruController::class, 'destroy'])->name('destroy');
+        Route::post('/import', [GuruController::class, 'import'])->name('import');
+        
+        // Export routes
+        Route::prefix('export')->name('export.')->group(function () {
+            Route::get('/excel', [GuruController::class, 'exportexcel'])->name('excel');
+            Route::get('/pdf', [GuruController::class, 'exportpdf'])->name('pdf');
+            Route::get('/word', [GuruController::class, 'exportword'])->name('word');
+        });
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Kalender Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('kalender')->name('kalender.')->group(function () {
+        Route::get('/', [KalenderController::class, 'index'])->name('index');
+        Route::get('/events', [KalenderController::class, 'fetchEvents'])->name('events');
+        Route::post('/store', [KalenderController::class, 'store'])->name('store');
+        Route::delete('/{id}/destroy', [KalenderController::class, 'destroy'])->name('destroy');
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Static Pages
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/history', function () {
+        return view('Panel.history.history');
+    })->name('history');
+    
+    Route::get('/users', function () {
+        return view('Panel.users.user');
+    })->name('users');
 });

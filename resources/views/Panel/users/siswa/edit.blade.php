@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-semibold text-gray-700">Edit Data Siswa <strong>{{ $siswa->Nama_Siswa }}</strong>
             </div>
 
-            <a href="{{ route('siswa') }}"
+            <a href="{{ route('siswa.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -36,7 +36,13 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Nama Kategori -->
+                <div>
+                    <label for="ID_Siswa" class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
+                    <input type="text" name="ID_Siswa" id="ID_Siswa" value="{{ $siswa->ID_Siswa }}"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        required>
+                </div>
+
                 <div>
                     <label for="Nama_Siswa" class="block text-sm font-medium text-gray-700 mb-1">Nama Siswa</label>
                     <input type="text" name="Nama_Siswa" id="Nama_Siswa" value="{{ $siswa->Nama_Siswa }}"

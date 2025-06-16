@@ -168,7 +168,7 @@ class SiswaController extends Controller
             'username' => $user->username,
         ]);
 
-        return redirect()->route('siswa')->with('success', 'Siswa berhasil ditambahkan');
+        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
     /**
@@ -187,19 +187,21 @@ class SiswaController extends Controller
     public function update(Request $request, string $id, string $id_user)
     {
         $request->validate([
-            'Nama_Siswa' => 'required',
-            'username' => 'required',
+            'ID_Siswa' => 'required',
+            'Nama_Siswa' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
         ]);
 
-        User::find($id_user)->update([
+       User::where('username', $id_user)->update([
             'username' => $request->username
         ]);
 
         siswa::find($id)->update([
+            'ID_Siswa' => $request->ID_Siswa,
             'Nama_Siswa' => $request->Nama_Siswa
         ]);
 
-        return redirect()->route('siswa')->with('success', 'Siswa berhasil diedit');
+        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil diedit');
     }
 
     /**
@@ -219,6 +221,6 @@ class SiswaController extends Controller
         if ($user) {
             $user->delete();
         }
-        return redirect(route('siswa'))->with('success', 'Siswa berhasil dihapus');
+        return back()->with('success', 'Siswa berhasil dihapus');
     }
 }

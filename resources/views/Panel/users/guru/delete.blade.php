@@ -29,7 +29,7 @@
                     Apa kamu yakin ingin menghapus Guru "{{ $item->Nama_Guru }}"? Aksi ini tidak bisa diulang.
                 </p>
             </div>
-            <form action="{{ route('destroy.guru', [$item->ID_Guru, $item->user->username]) }}" method="POST" class="inline">
+            <form action="{{ route('guru.destroy', [$item->ID_Guru, $item->user->username]) }}" method="POST" class="inline">
                 <div class="px-6 py-4 border-t bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
                     <button type="button" onclick="closeDeleteModal('{{ $item->ID_Guru }}_{{ $item->user->username }}')"
                         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400 cursor-pointer">

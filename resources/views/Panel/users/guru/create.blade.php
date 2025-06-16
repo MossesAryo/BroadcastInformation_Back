@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-semibold text-gray-700">Tambah Data Guru
             </div>
 
-            <a href="{{ route('get.guru') }}"
+            <a href="{{ route('guru.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -31,7 +31,7 @@
             @endif
 
             {{-- enctype="multipart/form-data" --}}
-            <form action="{{ route('store.guru') }}" method="POST" class="space-y-6">
+            <form action="{{ route('guru.store') }}" method="POST" class="space-y-6">
                 @csrf
 
                 <!-- Nama Kategori -->

@@ -117,7 +117,7 @@ class OperatorDepartemenController extends Controller
             'username' => $user->username,
         ]);
 
-        return redirect()->route('get.op')->with('success', 'Operator berhasil ditambahkan');
+        return redirect()->route('op.index')->with('success', 'Operator berhasil ditambahkan');
     }
     public function edit(string $id)
     {
@@ -146,7 +146,7 @@ class OperatorDepartemenController extends Controller
             'ID_Departemen' => $request->ID_Departemen,
         ]);
 
-        return redirect()->route('get.op')->with('success', 'Siswa berhasil diedit');
+        return redirect()->route('op.index')->with('success', 'Siswa berhasil diedit');
     }
     public function destroy(string $id)
     {
@@ -160,6 +160,6 @@ class OperatorDepartemenController extends Controller
             $user->delete();
         }
         $operator->delete();
-        return redirect()->route('get.op')->with('success', 'Data operator berhasil dihapus.');
+        return redirect()->route('op.index')->with('success', 'Data operator berhasil dihapus.');
     }
 }

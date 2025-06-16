@@ -6,7 +6,7 @@
                 <h2 class="text-xl font-semibold text-gray-700">Edit Data Guru <strong>{{ $guru->Nama_Guru }}</strong>
             </div>
 
-            <a href="{{ route('get.guru') }}"
+            <a href="{{ route('guru.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -17,7 +17,7 @@
             </a>
         </div>
 
-        
+
         <div class="bg-white shadow-md rounded-md p-6">
             @if ($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
@@ -29,14 +29,13 @@
                 </div>
             @endif
 
-            
-            <form action="{{ route('update.guru', [$guru->ID_Guru, $guru->username]) }}" method="POST"
-                class="space-y-6">
+
+            <form action="{{ route('guru.update', [$guru->ID_Guru, $guru->username]) }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
 
-               
-                 <div>
+
+                <div>
                     <label for="ID_Guru" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
                     <input type="text" name="ID_Guru" id="ID_Guru" value="{{ $guru->ID_Guru }}"
                         class="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"

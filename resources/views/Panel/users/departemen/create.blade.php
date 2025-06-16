@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-semibold text-gray-700">Tambah Departemen</h2>
             </div>
 
-            <a href="{{ route('kategori') }}"
+            <a href="{{ route('departemen.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
