@@ -18,6 +18,10 @@ class KategoriController extends Controller
         ]);
         
     }
+    public function indexAPI()
+    {
+        return response()->json(kategoriinformasi::latest()->get());
+    }
 
     /**
      * Show the form for creating a new resource.

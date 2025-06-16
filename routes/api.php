@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\Auth\ApiAuthController;
+use App\Http\Controllers\KategoriController;
 
 Route::get('/informasi', [InformasiController::class, 'indexAPI']);
+Route::get('/kategori', [KategoriController::class, 'indexAPI']);
 Route::prefix('auth')->group(function () {
     Route::post('/login', [ApiAuthController::class, 'apiLogin']);
 });

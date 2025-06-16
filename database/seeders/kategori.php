@@ -14,31 +14,31 @@ class kategori extends Seeder
     {
         $data = [
             [
-                'NamaKategori' => 'Pengumuman Sekolah',
+                'NamaKategori' => 'Pengumuman',
                 'Deskripsi'    => 'Berisi informasi umum yang ditujukan untuk seluruh warga sekolah.',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
-                'NamaKategori' => 'Kegiatan Siswa',
+                'NamaKategori' => 'Acara',
                 'Deskripsi'    => 'Informasi terkait kegiatan OSIS, ekstrakurikuler, dan lomba.',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
-                'NamaKategori' => 'Informasi Guru',
+                'NamaKategori' => 'Umum',
                 'Deskripsi'    => 'Berisi jadwal rapat, pelatihan, dan pengumuman untuk guru.',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
-                'NamaKategori' => 'Layanan Akademik',
+                'NamaKategori' => 'Akademik',
                 'Deskripsi'    => 'Menyediakan informasi tentang kurikulum, ujian, dan nilai.',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
-                'NamaKategori' => 'Layanan Umum',
+                'NamaKategori' => 'Berita',
                 'Deskripsi'    => 'Pengumuman umum seperti perbaikan fasilitas dan layanan sekolah.',
                 'created_at'   => now(),
                 'updated_at'   => now(),
