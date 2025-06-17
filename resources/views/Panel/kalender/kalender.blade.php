@@ -192,9 +192,7 @@
     <div class="calendar-container">
         <div class="calendar-header">
             <h2 class="text-xl font-semibold">Kalender Informasi</h2>
-            <button class="theme-button" id="add-event" onclick="window.location='{{ route('create.info') }}'">
-                <i class="fas fa-plus mr-2"></i>Tambah Informasi
-            </button>
+           
         </div>
         <div id="calendar"></div>
     </div>
